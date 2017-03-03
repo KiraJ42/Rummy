@@ -32,5 +32,6 @@ Java Semester Project Spring 2017
 <p>&emsp;Aces = 20 points</p>
 <p>&emsp;10, Jack, Queen, King  = 10 points</p>
 <p>&emsp;All others = 5 points</p>
-<p>&emsp;At the end of each round players add up the number of points left in their hand (with the winner receving a star to 
-<p>&emsp;represent 0 points). The round total is then added to each player's total score.</p>
+<p>&emsp;At the end of each round players add up the number of points left in their hand (with the winner receving a star to
+&emsp;&emsp;represent 0 points). The round total is then added to each player's total score.</p>
+<p>&emsp;At the end of all 7 rounds the player with the lowest score receives two and a half extra stars. The player with the most &emsp;&emsp;stars wins</p>
