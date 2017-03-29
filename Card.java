@@ -1,18 +1,36 @@
-public class Card 
-{
-	//card ranks and 
-	public static final int HEART 1;
-	public static final int DIAMOND 2;
-	public static final int SPADE 3; 
-	public static final int CLUB 4; 
-	
-	public static final int JACK 11;
-	public static final int QUEEN 12;
-	public static final int KING 13;
-	public static final int ACE_HIGH 14;
-	public static final int ACE_LOW 1;
-	
-	public int color;
-	public int suit;
-	public int rank;
+/**
+ * Created by Owner on 3/28/2017.
+ */
+public class Card {
+
+    //card ranks and
+    public static final String[] RANKS = {"Ace", "2", "3", "4", "5", "6", "7", "8", "9", "10", "Jack", "Queen", "King", "Joker"};
+    public static final String[] SUITS = {"Hearts", "Diamonds", "Spades", "Clubs", "Joker"};
+
+    public String suit;
+    public String rank;
+
+    Card(int suit, int rank)
+    {
+        this.rank = RANKS[rank];
+        this.suit = SUITS[suit];
+    }
+
+    public String toString()
+    {
+        if(suit.equals("Joker") && rank.equals("Joker"))
+            return "Joker";
+        return rank + " of " + suit;
+    }
+
+    public String getRank()
+    {
+        return rank;
+    }
+
+    public String getSuit()
+    {
+        return suit;
+    }
 }
+
