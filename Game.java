@@ -1,5 +1,7 @@
 import java.util.Scanner;
-
+/**
+ * Created by Owner on 3/28/2017.
+ */
 public class Game {
 
     private static int playerNum;
@@ -19,16 +21,10 @@ public class Game {
             players[i].name = input.next();
         }
 
-        Deck d1 = new Deck();
+        Deck d1 = new Deck(2);
         d1.shuffle();
 
-        for(int i = 0; i < playerNum; i++){
-            for(int h = 0; h < 11; h++)
-            {
-                Card hands = d1.takeCard();
-                players[i].hand.add(hands);
-            }
-        }
+        d1.Deal(11, players);
 
         for(int t = 0; t < playerNum; t++)
         {
