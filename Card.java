@@ -9,6 +9,7 @@ public class Card {
 
     public String suit;
     public String rank;
+    public String intRank;
     
     private ImageIcon front;
     private ImageIcon back;
@@ -19,8 +20,8 @@ public class Card {
     
     Card(int suit, int rank, ImageIcon f, ImageIcon b)
     {
-        this.rank = RANKS[rank];
-        this.suit = SUITS[suit];
+        rank = RANKS[rank];
+        suit = SUITS[suit];
         front = f;
         back = b;
     }
@@ -41,6 +42,19 @@ public class Card {
     {
         return suit;
     }
+    
+    
+    public int getValue(){
+       if(rank.equals("Ace"))
+           return 20;
+       else if(rank.equals("Queen") || rank.equals("King") || rank.equals("Jack") || rank.equals("10"))
+           return 10;
+       else if(rank.equals("Joker"))
+          return 50;
+        else
+            return 5;
+     }
+    
     
     public void draw(Graphics g, Component c) 
     {
