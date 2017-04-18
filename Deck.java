@@ -96,4 +96,9 @@ public class Deck {
     {
         return deck.toString();
     }
+    
+    public String endRound(){
+        deck.addAll(discard);
+        shuffle();
+    }
 }
