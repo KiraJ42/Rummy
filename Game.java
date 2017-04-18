@@ -55,11 +55,8 @@ public class Game {
         {
             rule.deal();
             
-            while(!rule.roundCheck())
-            {
-                rule.nextTurn();
-            }
-            
+            while(!rule.nextTurn());
+
             rule.endRound();
         }
         
