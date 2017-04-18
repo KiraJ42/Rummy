@@ -8,7 +8,6 @@ public abstract class Rules
     Deck deck;
     
     public abstract boolean victoryCheck();
-    public abstract boolean roundCheck();
     
     public abstract void deal();
     
