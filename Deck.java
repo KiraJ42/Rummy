@@ -49,7 +49,7 @@ public class Deck {
 
     public void shuffle()
     {
-        System.out.println("Shuffling Deck...");
+        //System.out.println("Shuffling Deck...");
         Collections.shuffle(deck);
     }
 
@@ -60,7 +60,7 @@ public class Deck {
         return ret;
     }
 
-    public void Deal(int hand, Player[] players)
+    public void Deal(int hand, ArrayList<Player> players)
     {
         for(Player x : players)
         {
