@@ -13,9 +13,9 @@ public class Deck {
         int jokerSuit = 4;
         int jokerRank = 13;
 
-        String bPath = "card back red.png";
+        /*String bPath = "card back red.png";
         URL bURL = cldr.getResource(bPath);
-        ImageIcon bImg = new ImageIcon(bURL);
+        ImageIcon bImg = new ImageIcon(bURL);*/
         
         /*if(deckNum == 2)
         {
@@ -31,9 +31,9 @@ public class Deck {
                     
                     String fPath = Card.RANKS[rank] + Card.SUITS[deckNum] + ".png";
                     URL fURL = cldr.getResource(fPath);
-                    ImageIcon fImg = new ImageIcon(fURL);
+                    ImageIcon front = new ImageIcon(fURL);
                     
-                    deck.add(new Card(suit, rank, front, back, i));
+                    deck.add(new Card(suit, rank, front, i));
                 }
             }
         }
