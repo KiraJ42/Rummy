@@ -1,9 +1,6 @@
 import java.util.ArrayList;
 import java.util.Collections;
 
-/**
- * Created by Owner on 3/28/2017.
- */
 public class Deck {
     private ArrayList<Card> deck;
     private ArrayList<Card> discard;
@@ -20,13 +17,13 @@ public class Deck {
         URL bURL = cldr.getResource(bPath);
         ImageIcon bImg = new ImageIcon(bURL);
         
-        if(deckNum == 2)
+        /*if(deckNum == 2)
         {
-            deck.add(new Card(jokerSuit, jokerRank));
-            deck.add(new Card(jokerSuit, jokerRank));
-            deck.add(new Card(jokerSuit, jokerRank));
-            deck.add(new Card(jokerSuit, jokerRank));
-        }
+            deck.add(new Card(jokerSuit, jokerRank, 13));
+            deck.add(new Card(jokerSuit, jokerRank, 13));
+            deck.add(new Card(jokerSuit, jokerRank, 13));
+            deck.add(new Card(jokerSuit, jokerRank, 13));
+        }*/
 
         for(int i = 0; i < deckNum; i++) {
             for (int suit = 0; suit < 4; suit++) {
@@ -36,7 +33,7 @@ public class Deck {
                     URL fURL = cldr.getResource(fPath);
                     ImageIcon fImg = new ImageIcon(fURL);
                     
-                    deck.add(new Card(suit, rank, front, back));
+                    deck.add(new Card(suit, rank, front, back, i));
                 }
             }
         }
