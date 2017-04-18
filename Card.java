@@ -18,10 +18,11 @@ public class Card {
     
     private boolean up;
     
-    Card(int suit, int rank, ImageIcon f, ImageIcon b)
+    Card(int suit, int rank, ImageIcon f, ImageIcon b, int iRank)
     {
         rank = RANKS[rank];
         suit = SUITS[suit];
+        intRank = iRank;
         front = f;
         back = b;
     }
