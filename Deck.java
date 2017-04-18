@@ -86,6 +86,8 @@ public class Deck {
                 i++;
             }
         }
+        
+        Discard(takeCard());
     }
 
     public void Discard(Card card)
