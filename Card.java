@@ -44,6 +44,12 @@ public class Card {
         return suit;
     }
     
+    public int getIntRank()
+    {
+        return intRank;
+    }
+        
+    
     
     public int getValue(){
        if(rank.equals("Ace"))
@@ -81,7 +87,5 @@ public class Card {
         x = a;
         y = b;
     }
-
-    
 }
 
