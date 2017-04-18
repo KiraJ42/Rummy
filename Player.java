@@ -18,6 +18,8 @@ public class Player {
         score += i;
     }
     
+    public int getScore(){return score;}
+    
     @Override
     public String toString() {
         return name + "\n" + "\t" + hand.toString();
