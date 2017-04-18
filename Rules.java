@@ -5,6 +5,7 @@ public abstract class Rules
     ArrayList<Player> players;
     int numCards;
     int current;
+    Deck deck;
     
     public abstract boolean victoryCheck();
     public abstract boolean roundCheck();
