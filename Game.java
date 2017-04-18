@@ -7,7 +7,8 @@ public class Game {
 
     Game() {
         JFrame window = new JFrame("Rummy");
-
+        Rules rule;
+     
         rummyGUI content = new rummyGUI();
         window.setContentPane(content);
         window.pack();
@@ -19,7 +20,7 @@ public class Game {
 
         String[] types = {"Rummy", "Gin Rummy", "Dummy Rummy"};
         String name = JOptionPane.showInputDialog(window, "Enter Your Name:", "Player Name", JOptionPane.PLAIN_MESSAGE);
-        Player player = new Player(name);
+        //Player player = new Player(name);
         String gameType = (String) JOptionPane.showInputDialog(window, "Which Rummy game would you like to play?", "Choose Game", JOptionPane.QUESTION_MESSAGE, null, types, types[0]);
 
         Integer[] playerNum = new Integer[3];
@@ -29,6 +30,7 @@ public class Game {
             for(int i = 0; i < 3; i++){
                 playerNum[i] = i+3;
             }
+
         }
         else {
             deckNum = 1;
@@ -39,9 +41,28 @@ public class Game {
 
 
         Integer num = (Integer) JOptionPane.showInputDialog(window, "How many players in your game?", "Players",JOptionPane.QUESTION_MESSAGE, null, playerNum, playerNum[0]);
-
-        Deck d1 = new Deck(deckNum);
-        d1.shuffle();
+        
+        if(gameType.equals("Dummy Rummy"))
+            rule = DummyRummy(num, name);
+        
+        else if(gameType.equals("Rummy"))
+            rule = Rummy(num, name);
+        
+        else if(gameType.equals("GinRummy"))
+            rule = GinRummy(num, name);
+        
+        while(!rule.victoryCheck())
+        {
+            rule.deal();
+            
+            while(!rule.roundCheck())
+            {
+                rule.nextTurn();
+            }
+            
+            rule.endRound();
+        }
+        
 
         //d1.Deal(11, p);
     }
