@@ -3,6 +3,12 @@
  */
 public class Card {
 
+    
+    String bPath = "card back red.png";
+    URL bURL = cldr.getResource(bPath);
+    public static final ImageIcon back =  new ImageIcon(bURL);
+   
+    
     //card ranks and
     public static final String[] RANKS = {"Ace", "2", "3", "4", "5", "6", "7", "8", "9", "10", "Jack", "Queen", "King", "Joker"};
     public static final String[] SUITS = {"Hearts", "Diamonds", "Spades", "Clubs", "Joker"};
@@ -18,7 +24,7 @@ public class Card {
     
     private boolean up;
     
-    Card(int suit, int rank, ImageIcon f, ImageIcon b, int iRank)
+    Card(int suit, int rank, ImageIcon f, int iRank)
     {
         rank = RANKS[rank];
         suit = SUITS[suit];
