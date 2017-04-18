@@ -3,23 +3,52 @@ import java.util.ArrayList;
 public class Player {
 
     protected String name;
-    protected int score;
+    protected int totalScore;
     
     public ArrayList<Card> hand = new ArrayList<Card>();
     public ArrayList<Lays> lays = new ArrayList<Lays>();
     
     Player(String n){
         name = n;
-        score = 0;
+        totalScore = 0;
     }
     
     //takes in an int and adds it to the player's total score
-    public int addScore(int i)
+    public int addTotalScore(int i)
     {
-        score += i;
+        totalScore += i;
     }
     
-    public int getScore(){return score;}
+    public int getTotalScore(){return totalScore;}
+    
+    public int getLaysScore()
+    {
+        int score = 0;
+        
+        for(Lays l : lays)
+        {
+            score += l.getScore(); 
+        }
+        
+        return score;
+    }
+    public int getHandScore()
+    {
+        int score = 0;
+        
+        for(Card c : hand)
+        {
+            score -= c.getValue();
+        }
+        
+        return score;
+    }
+    
+    public void clear()
+    {
+        hand.clear();
+        lays.clear();
+    }
     
     @Override
     public String toString() {
