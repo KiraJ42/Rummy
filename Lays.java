@@ -6,6 +6,7 @@ public abstract class Lays()
     int score;
     
     public abstract void addLay();
+    public abstract void isValid();
     
     public int getScore(){return score;}
     
