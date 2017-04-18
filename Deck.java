@@ -20,11 +20,6 @@ public class Deck {
         URL bURL = cldr.getResource(bPath);
         ImageIcon bImg = new ImageIcon(bURL);
         
-        if(deckNum == 1) {
-            deck.add(new Card(jokerSuit, jokerRank));
-            deck.add(new Card(jokerSuit, jokerRank));
-        }
-
         if(deckNum == 2)
         {
             deck.add(new Card(jokerSuit, jokerRank));
@@ -55,8 +50,28 @@ public class Deck {
 
     public Card takeCard()
     {
+        if(deck.isEmpty())
+        {
+            deck.addAll(discard);
+            discard.clear();
+            
+            shuffle();
+            
+            discard.add(deck.get(0));
+            deck.remove(0);
+            
+            //ADD DISCLAIMER THAT WE'RE SHUFFLING THE DECK
+        }
+        
         Card ret = deck.get(0);
         deck.remove(0);
+        return ret;
+    }
+    
+    public Card takeDiscard()
+    {
+        Card ret = discard.get(0);
+        discard.remove(0);
         return ret;
     }
 
@@ -75,7 +90,7 @@ public class Deck {
 
     public void Discard(Card card)
     {
-        discard.add(card);
+        discard.add(0, card);
     }
 
     public String toString()
