@@ -44,9 +44,21 @@ public class Player {
         return score;
     }
     
-    public void clear()
+    public void clear(Deck deck)
     {
+        for(Card c : hand)
+        {
+            deck.Discard(c);
+        }
         hand.clear();
+        
+        for(Lays l : lays)
+        {
+            for(Card c : l.getCards())
+            {
+                    deck.Discard(c);
+            }
+        }
         lays.clear();
     }
     
