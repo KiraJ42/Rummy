@@ -51,7 +51,7 @@ public class Deck {
             discard.add(deck.get(deck.size()-1));
             deck.remove(deck.size()-1);
             
-            //ADD DISCLAIMER THAT WE'RE SHUFFLING THE DECK
+            System.out.println("Shuffling the Deck!");
         }
         
         Card ret = deck.get(deck.size()-1);
@@ -68,12 +68,14 @@ public class Deck {
 
     public void Deal(int hand, ArrayList<Player> players)
     {
-        for(Player x : players) {
-            int i = 0;
-            while (i < hand) {
+        int i = 0;
+        while(i < hand)
+        {
+            for(Player x : players) {
                 x.hand.add(takeCard());
-                i++;
             }
+            
+            i++;
         }
         
         Discard(takeCard());
