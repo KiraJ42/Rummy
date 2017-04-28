@@ -1,5 +1,7 @@
 import java.util.ArrayList;
 import java.util.Collections;
+import java.net.URL;
+import javax.swing.ImageIcon;
 
 public class Deck {
     private ArrayList<Card> deck;
@@ -12,10 +14,6 @@ public class Deck {
 
         int jokerSuit = 4;
         int jokerRank = 13;
-
-        /*String bPath = "card back red.png";
-        URL bURL = cldr.getResource(bPath);
-        ImageIcon bImg = new ImageIcon(bURL);*/
         
         /*if(deckNum == 2)
         {
@@ -28,12 +26,8 @@ public class Deck {
         for(int i = 0; i < deckNum; i++) {
             for (int suit = 0; suit < 4; suit++) {
                 for (int rank = 0; rank < 13; rank++) {
-                    
-                    String fPath = Card.RANKS[rank] + Card.SUITS[deckNum] + ".png";
-                    URL fURL = cldr.getResource(fPath);
-                    ImageIcon front = new ImageIcon(fURL);
-                    
-                    deck.add(new Card(suit, rank, front, i));
+
+                    deck.add(new Card(suit, rank, /*front,*/ i));
                 }
             }
         }
@@ -54,31 +48,29 @@ public class Deck {
             
             shuffle();
             
-            discard.add(deck.get(0));
-            deck.remove(0);
+            discard.add(deck.get(deck.size()-1));
+            deck.remove(deck.size()-1);
             
             //ADD DISCLAIMER THAT WE'RE SHUFFLING THE DECK
         }
         
-        Card ret = deck.get(0);
-        deck.remove(0);
+        Card ret = deck.get(deck.size()-1);
+        deck.remove(deck.size()-1);
         return ret;
     }
     
     public Card takeDiscard()
     {
-        Card ret = discard.get(0);
-        discard.remove(0);
+        Card ret = discard.get(discard.size()-1);
+        discard.remove(discard.size()-1);
         return ret;
     }
 
     public void Deal(int hand, ArrayList<Player> players)
     {
-        for(Player x : players)
-        {
+        for(Player x : players) {
             int i = 0;
-            while(i < hand)
-            {
+            while (i < hand) {
                 x.hand.add(takeCard());
                 i++;
             }
@@ -89,7 +81,7 @@ public class Deck {
 
     public void Discard(Card card)
     {
-        discard.add(0, card);
+        discard.add(card);
     }
 
     public String toString()
@@ -97,8 +89,16 @@ public class Deck {
         return deck.toString();
     }
     
-    public String endRound(){
+    public void endRound(){
         deck.addAll(discard);
         shuffle();
+    }
+
+    public ArrayList<Card> getDeck(){
+        return deck;
+    }
+
+    public ArrayList<Card> getDiscard(){
+        return discard;
     }
 }
