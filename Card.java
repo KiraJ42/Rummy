@@ -25,9 +25,11 @@ public class Card {
     public String suit;
     public String rank;
     public int intRank;
-    
-    public ImageIcon front;
-    static public ImageIcon back;
+
+    public String front;
+    static public String back = "images/gold_crown.png";
+    public ImageIcon frontImg;
+    static public ImageIcon backImg = new ImageIcon(back);
     private int x;
     private int y;
     
@@ -38,13 +40,13 @@ public class Card {
         rank = RANKS[r];
         suit = SUITS[s];
         intRank = iRank;
-        //front = f;
 
-        back = getImage("images/gold_crown.png");
-        front = getImage("images/" + rank + suit + ".png");
+       backImg = null;
+       frontImg = null;
+        front = "images/" + rank + suit + ".png";
     }
 
-    public ImageIcon getImage(String path){
+    public static ImageIcon getImage(String path){
         try {
             InputStream is = new BufferedInputStream(new FileInputStream(path));
             Image image = ImageIO.read(is);
@@ -65,16 +67,28 @@ public class Card {
             path = "images/card back red.png";
         if(p.equals("blue"))
             path = "images/blue.png";
+        back = path;
 
        try {
-           InputStream is = new BufferedInputStream(new FileInputStream(path));
+           InputStream is = new BufferedInputStream(new FileInputStream(back));
            Image image = ImageIO.read(is);
            Image img = image.getScaledInstance(140,200, Image.SCALE_SMOOTH);
-           back = new ImageIcon(img);
+           backImg = new ImageIcon(img);
        }catch(Exception e){
            System.out.println("File not found");
        }
-       back = new ImageIcon();
+       backImg = new ImageIcon();
+    }
+
+    public void makeImage(){
+        try {
+            InputStream is = new BufferedInputStream(new FileInputStream(front));
+            Image image = ImageIO.read(is);
+            Image img = image.getScaledInstance(140,200, Image.SCALE_SMOOTH);
+            frontImg = new ImageIcon(img);
+        }catch(Exception e){
+            System.out.println("File not found");
+        }
     }
 
     public String toString()
@@ -113,16 +127,16 @@ public class Card {
      }
     
     
-    public void draw(Graphics g, Component c) 
+    public void draw(Graphics g, Component c)
     {
         if(up)
-            front.paintIcon(c, g, x, y);
+            frontImg.paintIcon(c, g, x, y);
         else
-            back.paintIcon(c, g, x, y);
+            backImg.paintIcon(c, g, x, y);
     }
     
-    public int getHeight(){return front.getIconHeight();}
-    public int getWidth(){return front.getIconWidth();}
+    public int getHeight(){return frontImg.getIconHeight();}
+    public int getWidth(){return frontImg.getIconWidth();}
     
     public boolean contains(int a, int b)
     {
