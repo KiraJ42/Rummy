@@ -1,5 +1,7 @@
+
 import java.awt.*;
 import java.awt.event.*;
+import java.io.FileReader;
 import java.io.IOException;
 import javax.swing.*;
 
@@ -9,30 +11,42 @@ public class rummyGUI extends JDesktopPane {
     static JRadioButtonMenuItem red;
     static JRadioButtonMenuItem blue;
 
+    static JMenuItem Gin;
+    static JMenuItem Rummy;
+
+    static Game game;
     static JFrame origin;
-    public rummyGUI(JFrame origin2) {
+
+    public rummyGUI(JFrame origin2, Game g) {
 
         origin = origin2;
+        game = g;
+
         setBackground( new Color(130,50,40) );
 
         setLayout( new BorderLayout(3,3) );
 
         JMenuBar mb = new JMenuBar();
-        JMenuItem newG, rules;
+        JMenuItem newG;
 
-        JMenu menu, set, cds;
+        JMenu menu, set, cds, rules;
 
         menu = new JMenu("Game");
         newG = new JMenuItem("New Game");
 
         set = new JMenu("Settings");
-        rules = new JMenuItem("Rules");
-       /* rules.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                openRules();
-            }
-        });*/
+
+        rules = new JMenu("Rules");
+
+        Gin = new JMenuItem("Gin");
+        Rummy = new JMenuItem("Rummy");
+
+        ruleHandler ruleH = new ruleHandler();
+        Gin.addActionListener(ruleH);
+        Rummy.addActionListener(ruleH);
+        rules.add(Gin);
+        rules.add(Rummy);
+
         cds = new JMenu("Cards");
 
         gold = new JRadioButtonMenuItem("Gold");
@@ -84,22 +98,52 @@ public class rummyGUI extends JDesktopPane {
         }
     }
 
-    /*protected void openRules() {
+    protected void openRules(String input) {
 
-        //this is the JDesktopPane that goes with the window JFrame
-        MyInternalFrame f = new MyInternalFrame();
-        f.setVisible(true);
-        this.add(f);
+        String path = "Error";
+        if(input.equals("Rummy"))
+            path = "Rummy";
+        if(input.equals("Gin Rummy"))
+            path = "Gin Rummy";
+        JDialog dialog = new JDialog();
+        JTextArea rulesText = new JTextArea();
+        FileReader reader = null;
+        try {
+            String filename = "Rules/"+path+".txt";
+            reader = new FileReader(filename);
+            rulesText.read(reader, filename);
 
+        }catch (IOException ie){
+            //put something here
+        }finally{
+            if(reader != null){
+                try{
+                    reader.close();
+                }catch(IOException e){
+                    //something here too
+                }
+            }
+        }
+
+        JScrollPane scroll = new JScrollPane(rulesText, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+
+        dialog.setTitle(path + " Rules");
+        dialog.add(scroll);
+        dialog.setSize(new Dimension((screenSize.width/2) + 100, (screenSize.height*1)-50 ));
+        dialog.setLocation(100, 10);
+        dialog.setVisible(true);
 
     }
 
-    class MyInternalFrame extends JInternalFrame{
-        public MyInternalFrame(){
-            super("Frame", true, true, true, true);
-            setSize(300, 300);
-            setLocation(100, 100);
-            setBackground(Color.WHITE);
+    private class ruleHandler implements ActionListener{
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            if(e.getSource() == Gin)
+                openRules("Gin Rummy");
+            if(e.getSource() == Rummy)
+                openRules("Rummy");
         }
-    }*/
+    }
 }
