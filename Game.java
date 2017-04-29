@@ -138,7 +138,27 @@ public class Game {
                 window.validate();
                 window.repaint();
             }else{
-                System.out.println("more");
+                if(Set.isValid(p.checkLay)){
+                    p.lays.add(new Set(p.checkLay));
+                    for(Card x : p.checkLay){
+                        playerHand.updateH(p.hand.indexOf(x));
+                        p.hand.remove(x);
+                    }
+                    p.checkLay.clear();
+                    window.validate();
+                    window.repaint();
+                }else if(Series.isValid(p.checkLay)){
+                    p.lays.add(new Series(p.checkLay));
+                    for(Card x : p.checkLay){
+                        playerHand.updateH(p.hand.indexOf(x));
+                        p.hand.remove(x);
+                    }
+                    p.checkLay.clear();
+                    window.validate();
+                    window.repaint();
+                }else{
+                    JOptionPane.showMessageDialog(window, "Not a valid Set or Series");
+                }
 
             }
         }
