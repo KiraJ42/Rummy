@@ -1,17 +1,7 @@
 import javax.swing.*;
-import javax.swing.border.Border;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.Collections;
 
-/**
- * Created by Owner on 3/28/2017.
- */
 public class Game {
 
     public static String gameType;
@@ -19,6 +9,7 @@ public class Game {
     public static Deck d;
     public static JFrame window;
     static playerHandGUI playerHand;
+    static JLabel discard;
 
     Game() {
         window = new JFrame("Rummy");
@@ -47,8 +38,12 @@ public class Game {
 
         Card.backImg = Card.getImage(Card.back);
         JLabel cardDeck = new JLabel(Card.backImg);
-
-       // JLabel cd = new JLabel(Card.backImg);
+        cardDeck.addMouseListener(new MouseAdapter(){
+            @Override
+            public void mouseClicked(MouseEvent e){
+                pickCard();
+            }
+        });
 
         PlayerInfo play = new PlayerInfo();
         scores.add(play);
@@ -75,30 +70,26 @@ public class Game {
         playerHand = new playerHandGUI(player);
 
         window.getContentPane().add(playerHand, BorderLayout.SOUTH);
-
-        JButton take = new JButton("Pick a Card");
-        take.addActionListener(new pickCard());
-        JButton discard = new JButton("Discard");
-        discard.addActionListener(new checkCard());
-        JButton checkLay = new JButton("Check Selection");
-        checkLay.addActionListener(new checkCard());
-
-        JPanel buttonPanel = new JPanel();
-        buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.Y_AXIS));
-        buttonPanel.setBackground(new Color(130,50,40));
-
-        buttonPanel.add(take);
-        buttonPanel.add(Box.createVerticalStrut(10));
-        buttonPanel.add(discard);
-        buttonPanel.add(Box.createVerticalStrut(10));
-        buttonPanel.add(checkLay);
+        
+        cardButtons buttonPanel = new cardButtons(this);
 
         scores.add(buttonPanel);
 
         ArrayList<Card> disc = d.getDiscard();
         Card r = disc.get(disc.size()-1);
-        JLabel dis = new JLabel(r.frontImg);
-        center.add(dis);
+        discard = new JLabel(r.frontImg);
+        discard.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e){
+                Card cd = d.takeDiscard():
+                player.hand.add(cd);
+                playerHand.add(cd);
+                updateDiscard();
+                window.validate();
+                window.repaint();
+            }
+        });
+        center.add(discard);
 
         window.validate();
         window.repaint();
@@ -125,45 +116,26 @@ public class Game {
         Game game = new Game();
     }
 
-    public class checkCard implements ActionListener{
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            Player p = players.get(0);
-            if(p.checkLay.size() == 1) {
-                Card r = p.checkLay.get(0);
-                playerHand.updateH(p.hand.indexOf(r));
-                p.hand.remove(r);
-                d.Discard(r);
-                p.checkLay.clear();
-                window.validate();
-                window.repaint();
-            }else{
-                if(Set.isValid(p.checkLay)){
-                    p.lays.add(new Set(p.checkLay));
-                    for(Card x : p.checkLay){
-                        playerHand.updateH(p.hand.indexOf(x));
-                        p.hand.remove(x);
-                    }
-                    p.checkLay.clear();
-                    window.validate();
-                    window.repaint();
-                }else if(Series.isValid(p.checkLay)){
-                    p.lays.add(new Series(p.checkLay));
-                    for(Card x : p.checkLay){
-                        playerHand.updateH(p.hand.indexOf(x));
-                        p.hand.remove(x);
-                    }
-                    p.checkLay.clear();
-                    window.validate();
-                    window.repaint();
-                }else{
-                    JOptionPane.showMessageDialog(window, "Not a valid Set or Series");
-                }
-
-            }
+    public void updateDiscard(){
+        if(d.getDiscard().size() > 0) {
+            Card x = d.getDiscard().get(d.getDiscard().size() - 1);
+            Container parent = discard.getParent();
+            parent.remove(discard);
+            discard = new JLabel(x.frontImg);
+            parent.add(discard);
+            window.validate();
+            window.repaint();
+        }else{
+            Container parent = discard.getParent();
+            parent.remove(discard);
+            discard = new JLabel();
+            discard.setBackground(new Color(130,50,40));
+            parent.add(discard);
+            window.validate();
+            window.repaint();
         }
     }
-
+    
     public class pickCard implements ActionListener{
         @Override
         public void actionPerformed(ActionEvent e) {
