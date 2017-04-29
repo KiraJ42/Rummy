@@ -6,6 +6,7 @@ public class Player {
     protected int totalScore;
     
     public ArrayList<Card> hand = new ArrayList<Card>();
+    public ArrayList<Card> checkLay = new ArrayList<Card>();
     public ArrayList<Lays> lays = new ArrayList<Lays>();
     
     Player(String n){
