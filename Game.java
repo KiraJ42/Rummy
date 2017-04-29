@@ -52,9 +52,6 @@ public class Game {
 
         window.add(center, BorderLayout.CENTER);
 
-        new Music();
-
-
         d = new Deck();
 
         d.shuffle();
