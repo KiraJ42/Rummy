@@ -7,7 +7,7 @@ public class Deck {
     private ArrayList<Card> deck;
     private ArrayList<Card> discard;
 
-    Deck(int deckNum)
+    Deck()
     {
         deck = new ArrayList<Card>();
         discard = new ArrayList<Card>();
