@@ -4,7 +4,7 @@ public class Set extends Lays(){
     //CAN ONLY BE USED AFTER AN ISVALID CHECK OF C
     Set(ArrayList<Card> cards)
     {
-        lay.addAll(cards);
+        lay = cards;
         score = 0;
         
         for(Card c : lay)
