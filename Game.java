@@ -1,6 +1,8 @@
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -13,11 +15,14 @@ import java.util.Collections;
 public class Game {
 
     public static String gameType;
+    public static ArrayList<Player> players;
+    public static Deck d;
+    public static JFrame window;
+    static playerHandGUI playerHand;
 
     Game() {
-        JFrame window = new JFrame("Rummy");
+        window = new JFrame("Rummy");
         Rules rule;
-        Deck d;
      
         rummyGUI content = new rummyGUI(window, this);
         window.setContentPane(content);
@@ -59,7 +64,7 @@ public class Game {
 
         d.shuffle();
 
-        ArrayList<Player> players= new ArrayList<>();
+        players= new ArrayList<>();
         players.add(player);
 
         for(int i = 0; i < (num-1); i++)
@@ -67,13 +72,16 @@ public class Game {
 
         d.Deal(7, players);
 
-        playerHandGUI playerHand = new playerHandGUI(players);
+        playerHand = new playerHandGUI(player);
 
         window.getContentPane().add(playerHand, BorderLayout.SOUTH);
 
         JButton take = new JButton("Pick a Card");
+        take.addActionListener(new pickCard());
         JButton discard = new JButton("Discard");
+        discard.addActionListener(new checkCard());
         JButton checkLay = new JButton("Check Selection");
+        checkLay.addActionListener(new checkCard());
 
         JPanel buttonPanel = new JPanel();
         buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.Y_AXIS));
@@ -115,5 +123,36 @@ public class Game {
     public static void main(String[] args)
     {
         Game game = new Game();
+    }
+
+    public class checkCard implements ActionListener{
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            Player p = players.get(0);
+            if(p.checkLay.size() == 1) {
+                Card r = p.checkLay.get(0);
+                playerHand.updateH(p.hand.indexOf(r));
+                p.hand.remove(r);
+                d.Discard(r);
+                p.checkLay.clear();
+                window.validate();
+                window.repaint();
+            }else{
+                System.out.println("more");
+
+            }
+        }
+    }
+
+    public class pickCard implements ActionListener{
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            Player p = players.get(0);
+            Card newC = d.takeCard();
+            p.hand.add(newC);
+            playerHand.add(newC);
+            window.validate();
+            window.repaint();
+        }
     }
 }
