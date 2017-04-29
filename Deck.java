@@ -12,23 +12,9 @@ public class Deck {
         deck = new ArrayList<Card>();
         discard = new ArrayList<Card>();
 
-        int jokerSuit = 4;
-        int jokerRank = 13;
-        
-        /*if(deckNum == 2)
-        {
-            deck.add(new Card(jokerSuit, jokerRank, 13));
-            deck.add(new Card(jokerSuit, jokerRank, 13));
-            deck.add(new Card(jokerSuit, jokerRank, 13));
-            deck.add(new Card(jokerSuit, jokerRank, 13));
-        }*/
-
-        for(int i = 0; i < deckNum; i++) {
-            for (int suit = 0; suit < 4; suit++) {
-                for (int rank = 0; rank < 13; rank++) {
-
-                    deck.add(new Card(suit, rank, /*front,*/ i));
-                }
+        for (int suit = 0; suit < 4; suit++) {
+            for (int rank = 0; rank < 13; rank++) {
+                 deck.add(new Card(suit, rank, rank+1));
             }
         }
     }
@@ -51,11 +37,12 @@ public class Deck {
             discard.add(deck.get(deck.size()-1));
             deck.remove(deck.size()-1);
             
-            System.out.println("Shuffling the Deck!");
+            System.out.println("Shuffling deck");
         }
         
         Card ret = deck.get(deck.size()-1);
         deck.remove(deck.size()-1);
+        ret.makeImage();
         return ret;
     }
     
@@ -69,12 +56,10 @@ public class Deck {
     public void Deal(int hand, ArrayList<Player> players)
     {
         int i = 0;
-        while(i < hand)
-        {
+        while(i < hand){
             for(Player x : players) {
                 x.hand.add(takeCard());
             }
-            
             i++;
         }
         
