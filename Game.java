@@ -1,4 +1,5 @@
 import javax.swing.*;
+import javax.swing.border.Border;
 import java.awt.*;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -11,16 +12,28 @@ import java.util.Collections;
  */
 public class Game {
 
+    public static String gameType;
+
     Game() {
         JFrame window = new JFrame("Rummy");
         Rules rule;
         Deck d;
      
-        rummyGUI content = new rummyGUI(window);
+        rummyGUI content = new rummyGUI(window, this);
         window.setContentPane(content);
-
         window.setResizable(true);
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        window.pack();
+        window.setVisible(true);
+
+
+        String[] types = {"Rummy", "Gin Rummy"};
+        String name = JOptionPane.showInputDialog(window, "Enter Your Name:", "Welcome to Rummy!", JOptionPane.PLAIN_MESSAGE);
+        Player player = new Player(name);
+        gameType = (String) JOptionPane.showInputDialog(window, "Which Rummy game would you like to play?", "Choose Game", JOptionPane.QUESTION_MESSAGE, null, types, types[0]);
+        Integer[] playerNum = {2, 3, 4};
+        Integer num = (Integer) JOptionPane.showInputDialog(window, "How many players in your game?", "Players",JOptionPane.QUESTION_MESSAGE, null, playerNum, playerNum[0]);
+
 
         JPanel center = new JPanel();
         JPanel scores = new JPanel();
@@ -29,46 +42,22 @@ public class Game {
 
         Card.backImg = Card.getImage(Card.back);
         JLabel cardDeck = new JLabel(Card.backImg);
-        JLabel cd = new JLabel(Card.backImg);
-        scores.add(cd);
+
+       // JLabel cd = new JLabel(Card.backImg);
+
+        PlayerInfo play = new PlayerInfo();
+        scores.add(play);
         center.add(cardDeck);
         window.add(scores, BorderLayout.NORTH);
+
         window.add(center, BorderLayout.CENTER);
-        //window.add(scores, BorderLayout.NORTH);
+
         new Music();
-        window.pack();
-        window.setVisible(true);
 
 
-        String[] types = {"Rummy", "Gin Rummy"};
-        String name = JOptionPane.showInputDialog(window, "Enter Your Name:", "Player Name", JOptionPane.PLAIN_MESSAGE);
-        Player player = new Player(name);
-        String gameType = (String) JOptionPane.showInputDialog(window, "Which Rummy game would you like to play?", "Choose Game", JOptionPane.QUESTION_MESSAGE, null, types, types[0]);
+        d = new Deck();
 
-        Integer[] playerNum = new Integer[3];
-        int deckNum;
-        if (gameType.equals("Dummy Rummy")){
-            deckNum = 2;
-            for(int i = 0; i < 3; i++){
-                playerNum[i] = i+3;
-            }
-
-        }
-        else {
-            deckNum = 1;
-            for(int i = 0; i < 3; i++){
-                playerNum[i] = i+2;
-            }
-        }
-        Integer num = (Integer) JOptionPane.showInputDialog(window, "How many players in your game?", "Players",JOptionPane.QUESTION_MESSAGE, null, playerNum, playerNum[0]);
-
-        getTime();
-        System.out.println("make deck");
-        d = new Deck(deckNum);
-        getTime();
         d.shuffle();
-        System.out.println("shuffle deck");
-        getTime();
 
         ArrayList<Player> players= new ArrayList<>();
         players.add(player);
@@ -76,25 +65,28 @@ public class Game {
         for(int i = 0; i < (num-1); i++)
             players.add(new Player("Player" + (i+2)));
 
-        getTime();
         d.Deal(7, players);
-        System.out.println("Dealing");
-        getTime();
 
-        JPanel playerHand = new JPanel();
-        playerHand.setLayout(new FlowLayout());
-        playerHand.setBackground( new Color(130,50,40) );
-
-        Player x = players.get(0);
-
-        for(int i = 0; i < 7; i++){
-
-            Card a = x.hand.get(i);
-            JLabel j = new JLabel(a.frontImg);
-            playerHand.add(j);
-        }
+        playerHandGUI playerHand = new playerHandGUI(players);
 
         window.getContentPane().add(playerHand, BorderLayout.SOUTH);
+
+        JButton take = new JButton("Pick a Card");
+        JButton discard = new JButton("Discard");
+        JButton checkLay = new JButton("Check Selection");
+
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.Y_AXIS));
+        buttonPanel.setBackground(new Color(130,50,40));
+
+        buttonPanel.add(take);
+        buttonPanel.add(Box.createVerticalStrut(10));
+        buttonPanel.add(discard);
+        buttonPanel.add(Box.createVerticalStrut(10));
+        buttonPanel.add(checkLay);
+
+        scores.add(buttonPanel);
+
         ArrayList<Card> disc = d.getDiscard();
         Card r = disc.get(disc.size()-1);
         JLabel dis = new JLabel(r.frontImg);
@@ -119,14 +111,6 @@ public class Game {
             rule.endRound();
         }*/
         //d1.Deal(11, p);
-    }
-
-    public void getTime()
-    {
-        DateFormat df = new SimpleDateFormat("mm:ss");
-        Date date = new Date();
-        System.out.println(df.format(date));
-
     }
     public static void main(String[] args)
     {
