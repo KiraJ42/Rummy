@@ -1,28 +1,25 @@
 import javax.swing.*;
 import javax.swing.border.Border;
-import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.util.ArrayList;
 import java.awt.event.*;
 
-/**
- * Created by Owner on 4/29/2017.
- */
 public class playerHandGUI extends JPanel{
 
 
-    static ArrayList<Player> players;
+    static Player player;
+    static ArrayList<JLabel> hand;
     playerHandGUI(ArrayList<Player> p) {
         super();
+        hand = new ArrayList<>();
+        player = p;
         setLayout(new FlowLayout());
         setBackground(new Color(130, 50, 40));
 
-        Player x = p.get(0);
-
-        for (int i = 0; i < 7; i++) {
-
-            Card a = x.hand.get(i);
+        for (int i = 0; i < player.hand.size(); i++) {
+            Card a = player.hand.get(i);
             JLabel j = new JLabel(a.frontImg);
+            hand.add(j);
             j.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
@@ -44,5 +41,26 @@ public class playerHandGUI extends JPanel{
         }
         jl.validate();
         jl.repaint();
+    }
+    
+    public void add(Card c){
+        JLabel j = new JLabel(c.frontImg);
+        j.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                selectCard(player, c, j);
+            }
+        });
+        hand.add(j);
+        this.add(j);
+    }
+
+    public void updateH(int index){
+        JLabel L = hand.get(index);
+        hand.remove(index);
+        this.remove(L);
+        this.validate();
+        this.repaint();
+
     }
 }
