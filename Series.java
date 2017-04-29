@@ -5,7 +5,7 @@ public class Series extends Lays()
     //CAN ONLY BE USED AFTER AN ISVALID CHECK OF C
     Series(ArrayList<Card> cards)
     {
-        lay.addAll(cards);
+        lay = cards;
         score = 0;
         
         for(Card c : lay)
