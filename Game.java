@@ -1,6 +1,9 @@
 import javax.swing.*;
 import java.awt.*;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Collections;
 
 /**
@@ -23,11 +26,10 @@ public class Game {
         JPanel scores = new JPanel();
         center.setBackground( new Color(130,50,40) );
         scores.setBackground( new Color(130,50,40) );
-        //scores.setSize(content.getWidth(), 200);
-        Card c = new Card(0, 2, 4);
-        Card dc = new Card(0, 1, 5);
-        JLabel cardDeck = new JLabel(c.back);
-        JLabel cd = new JLabel(dc.back);
+
+        Card.backImg = Card.getImage(Card.back);
+        JLabel cardDeck = new JLabel(Card.backImg);
+        JLabel cd = new JLabel(Card.backImg);
         scores.add(cd);
         center.add(cardDeck);
         window.add(scores, BorderLayout.NORTH);
@@ -60,8 +62,13 @@ public class Game {
         }
         Integer num = (Integer) JOptionPane.showInputDialog(window, "How many players in your game?", "Players",JOptionPane.QUESTION_MESSAGE, null, playerNum, playerNum[0]);
 
+        getTime();
+        System.out.println("make deck");
         d = new Deck(deckNum);
+        getTime();
         d.shuffle();
+        System.out.println("shuffle deck");
+        getTime();
 
         ArrayList<Player> players= new ArrayList<>();
         players.add(player);
@@ -69,7 +76,10 @@ public class Game {
         for(int i = 0; i < (num-1); i++)
             players.add(new Player("Player" + (i+2)));
 
+        getTime();
         d.Deal(7, players);
+        System.out.println("Dealing");
+        getTime();
 
         JPanel playerHand = new JPanel();
         playerHand.setLayout(new FlowLayout());
@@ -80,14 +90,14 @@ public class Game {
         for(int i = 0; i < 7; i++){
 
             Card a = x.hand.get(i);
-            JLabel j = new JLabel(a.front);
+            JLabel j = new JLabel(a.frontImg);
             playerHand.add(j);
         }
 
         window.getContentPane().add(playerHand, BorderLayout.SOUTH);
         ArrayList<Card> disc = d.getDiscard();
         Card r = disc.get(disc.size()-1);
-        JLabel dis = new JLabel(r.front);
+        JLabel dis = new JLabel(r.frontImg);
         center.add(dis);
 
         window.validate();
@@ -109,6 +119,14 @@ public class Game {
             rule.endRound();
         }*/
         //d1.Deal(11, p);
+    }
+
+    public void getTime()
+    {
+        DateFormat df = new SimpleDateFormat("mm:ss");
+        Date date = new Date();
+        System.out.println(df.format(date));
+
     }
     public static void main(String[] args)
     {
