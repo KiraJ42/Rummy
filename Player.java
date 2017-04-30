@@ -11,6 +11,7 @@ public class Player {
     public ArrayList<Card> hand = new ArrayList<Card>();
     public ArrayList<Card> checkLay = new ArrayList<Card>();
     public ArrayList<Lays> lays = new ArrayList<Lays>();
+    public static ArrayList<Lays> allLays = new ArrayList<Lays>();
     public ArrayList<Lays> ScoredLays = new ArrayList<Lays>();
     
     Player(String n){
