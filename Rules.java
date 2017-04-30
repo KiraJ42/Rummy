@@ -15,7 +15,7 @@ public abstract class Rules
     public abstract void endRound();
     
     //increases current
-    public abstract void nextTurn();
+    public abstract boolean nextTurn();
     
     Rules(int numP, String n)
     {
@@ -31,7 +31,7 @@ public abstract class Rules
     
     public int getPlayerScore(int i)
     {
-        return players.get(i).getScore();
+        return players.get(i).getTotalScore();
     }
     
   
