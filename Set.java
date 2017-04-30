@@ -1,7 +1,8 @@
 import java.util.*;
 
-public class Set extends Lays(){
+public class Set extends Lays{
     //CAN ONLY BE USED AFTER AN ISVALID CHECK OF C
+
     Set(ArrayList<Card> cards)
     {
         lay = cards;
@@ -30,5 +31,10 @@ public class Set extends Lays(){
       
         return true;
     }
-    
+
+    @Override
+    public String toString() {
+        Card c = lay.get(lay.size() - 1);
+        return  c.getRank();
+    }
 }
