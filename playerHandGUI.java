@@ -4,12 +4,14 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.awt.event.*;
 
+/**
+ * Created by Owner on 4/29/2017.
+ */
 public class playerHandGUI extends JPanel{
-
 
     static Player player;
     static ArrayList<JLabel> hand;
-    playerHandGUI(ArrayList<Player> p) {
+    playerHandGUI(Player p) {
         super();
         hand = new ArrayList<>();
         player = p;
@@ -23,7 +25,7 @@ public class playerHandGUI extends JPanel{
             j.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
-                    selectCard(x, a, j);
+                    selectCard(player, a, j);
                 }
             });
             add(j);
@@ -42,7 +44,7 @@ public class playerHandGUI extends JPanel{
         jl.validate();
         jl.repaint();
     }
-    
+
     public void add(Card c){
         JLabel j = new JLabel(c.frontImg);
         j.addMouseListener(new MouseAdapter() {
