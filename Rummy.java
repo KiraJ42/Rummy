@@ -1,19 +1,19 @@
-import java.util*
+import java.util.*;
 
 public class Rummy extends Rules
-{ 
+{
     Rummy(int numP, String n)
     {
         super(numP, n);
         
-        deck = new Deck(1);
+        deck = new Deck();
         
     }
     public boolean victoryCheck()
     {
         for(Player p : players)
         {
-            if(p.getScore() >= 500)
+            if(p.getTotalScore() >= 500)
               return true;
         }
         
@@ -36,6 +36,9 @@ public class Rummy extends Rules
     }
     
     //increases current
-    public abstract void nextTurn();
+    public boolean nextTurn()
+    {
+        return true;
+    }
     
 }
