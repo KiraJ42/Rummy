@@ -8,18 +8,9 @@ import java.io.*;
 import java.awt.*;
 import javax.swing.*;
 
-/**
- * Created by Owner on 3/28/2017.
- */
 public class Card {
 
-    
-    //static String bPath = "card back red.png";
-    //URL bURL = cldr.getResource(bPath);
-    //public static final ImageIcon Cardback =  new ImageIcon(bPath);
-    
-    //card ranks and
-    public static final String[] RANKS = {"Ace", "2", "3", "4", "5", "6", "7", "8", "9", "10", "Jack", "Queen", "King", "Joker"};
+    public static final String[] RANKS = {"A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "Joker"};
     public static final String[] SUITS = {"Hearts", "Diamonds", "Spades", "Clubs", "Joker"};
 
     public String suit;
@@ -116,9 +107,9 @@ public class Card {
     
     
     public int getValue(){
-       if(rank.equals("Ace"))
+       if(rank.equals("A"))
            return 20;
-       else if(rank.equals("Queen") || rank.equals("King") || rank.equals("Jack") || rank.equals("10"))
+       else if(rank.equals("Q") || rank.equals("K") || rank.equals("J") || rank.equals("10"))
            return 10;
        else if(rank.equals("Joker"))
           return 50;
