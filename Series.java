@@ -1,8 +1,8 @@
 import java.util.*;
 
-public class Series extends Lays()
-{
+public class Series extends Lays {
     //CAN ONLY BE USED AFTER AN ISVALID CHECK OF C
+
     Series(ArrayList<Card> cards)
     {
         lay = cards;
@@ -16,7 +16,7 @@ public class Series extends Lays()
   
     public static boolean isValid(ArrayList<Card> cards)
     {
-        String suit
+        String suit;
         int next = 1 + cards.get(0).getIntRank();
       
         if(cards.size() < 3)
@@ -26,7 +26,9 @@ public class Series extends Lays()
         
         Collections.sort(cards, new Comparator<Card>(){
                         public int compare(Card a, Card b){
-                                        return compare(a.getIntRank(), b.getIntRank());
+                            Integer A = a.getIntRank();
+                            Integer B = b.getIntRank();
+                            return A.compareTo(B);
                         }
         });
       
@@ -40,5 +42,24 @@ public class Series extends Lays()
       
         return true;
     }
-    
+
+    @Override
+    public String toString() {
+        String print = "";
+        String printSuit;
+        String suit = lay.get(0).getSuit();
+        if(suit.equals("Hearts"))
+            printSuit = "\u2665";
+        else if(suit.equals("Diamonds"))
+            printSuit = "\u2666";
+        else if(suit.equals("Spades"))
+            printSuit = "\u2660";
+        else
+            printSuit = "\u2660";
+
+        for( Card x : lay){
+            print = x.getRank() + printSuit + ", ";
+        }
+        return print;
+    }
 }
