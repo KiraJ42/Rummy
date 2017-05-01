@@ -11,21 +11,36 @@ public class Computer extends Player{
     
     public void TakeTurn(deck d)
     {
-        Card discard = d.getDiscard();
-        bool getDiscard;
+        Card discard = d.getDiscardCard();
+        bool getDiscard = false;
         
         for(Lay l : allLays)
         {
-            if()
+            if(l.addCard(discard))
+            {
+               hand.add(d.takeDiscard());
+               getDiscard = true;
+            }
         }
+        
+        if(!getDiscard)
+        {
+            for(Card c : hand)
+            {
+                //insert crying here
+            }
+        }
+        
+        if(!getDiscard)
+            hend.add(d.takeCard());
         
         for(Card c : hand)
         {
-            //insert crying here
+             
         }
-        
-        if(getDiscard)
             
     }
+    
+    
     
 }
