@@ -33,6 +33,20 @@ public class Set extends Lays{
     }
 
     @Override
+    public boolean addCard(Card c)
+    {
+        boolean valid = false;
+        lay.add(c);
+        
+        if(isValid(lay))
+            valid = true;
+   
+        
+        lay.remove(lay.size() - 1);
+        return valid;      
+    }
+    
+    @Override
     public String toString() {
         Card c = lay.get(lay.size() - 1);
         return  c.getRank();
