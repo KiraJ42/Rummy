@@ -16,6 +16,7 @@ public class Card {
     public String suit;
     public String rank;
     public int intRank;
+    public int intSuit;
 
     public String front;
     static public String back = "images/gold_crown.png";
@@ -31,7 +32,7 @@ public class Card {
         rank = RANKS[r];
         suit = SUITS[s];
         intRank = iRank;
-
+        intSuit = s;
        backImg = null;
        frontImg = null;
         front = "images/" + rank + suit + ".png";
@@ -97,6 +98,11 @@ public class Card {
     public String getSuit()
     {
         return suit;
+    }
+    
+    public int getIntSuit()
+    {
+        return intSuit;
     }
     
     public int getIntRank()
