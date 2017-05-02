@@ -44,6 +44,20 @@ public class Series extends Lays {
     }
 
     @Override
+    public boolean addCard(Card c)
+    {
+        //boolean valid = false;
+        lay.add(c);
+        
+        if(isValid(lay))
+            return true;
+   
+        
+        lay.remove(lay.size() - 1);
+        return false;      
+    }
+    
+    @Override
     public String toString() {
         String print = "";
         String printSuit;
