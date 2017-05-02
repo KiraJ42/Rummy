@@ -9,4 +9,5 @@ public abstract class Lays{
 
     public int getScore(){return score;}
     public static ArrayList<Card> getCards(){return new ArrayList<Card>();}
+    public abstract boolean addCard(Card c);
 }
