@@ -1,116 +1,146 @@
-import javax.swing.*;
-import javax.swing.border.Border;
-import javax.swing.table.DefaultTableModel;
-import java.awt.*;
-import java.util.Scanner;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
-public class PlayerInfo extends JPanel {
+public class Player extends Thread{
 
-    protected JLabel SCORE;
-    protected JLabel SETS;
-    protected JLabel SERIES;
-    protected JLabel H;
-    protected JLabel D;
-    protected JLabel S;
-    protected JLabel C;
-    protected Player player;
-    protected Font bigger;
-
-    public PlayerInfo(Player p){
-        setBackground(new Color (250, 250, 210));
-        Border border = BorderFactory.createLineBorder(Color.BLACK, 3);
-        setBorder(border);
-
-        player = p;
-        setLayout(new GridLayout(0,1));
-        JLabel name = new JLabel(" Player Name: " + p.name + " ");
-        Font font = name.getFont();
-        bigger = new Font(font.getFontName(), Font.PLAIN, 16);
-        name.setFont(bigger);
-        SCORE = new JLabel(" Score: " + p.getTotalScore() + " ");
-        SCORE.setFont(bigger);
-        SETS = new JLabel(" Sets: " +  " ");
-        SETS.setFont(bigger);
-        SERIES = new JLabel(" Series: " + " ");
-        SERIES.setFont(bigger);
-        H = new JLabel("\u2665: " + " ");
-        H.setFont(bigger);
-        D = new JLabel("\u2666: " + " ");
-        D.setFont(bigger);
-        S = new JLabel("\u2660: " + " ");
-        S.setFont(bigger);
-        C = new JLabel("\u2663: " + " ");
-        C.setFont(bigger);
-
-        add(name);
-        add(SCORE);
-        add(SETS);
-        add(SERIES);
-        add(H);
-        add(D);
-        add(S);
-        add(C);
+    public String name;
+    protected int totalScore;
+    public boolean isTurn;
+    public boolean discarded;
+    public boolean drawn;
+    public PlayerInfo details;
+    public static int turns;
+    public static Game g;
+    
+    public ArrayList<Card> hand = new ArrayList<Card>();
+    public ArrayList<Card> checkLay = new ArrayList<Card>();
+    public ArrayList<Lays> lays = new ArrayList<Lays>();
+    public static ArrayList<Lays> allLays = new ArrayList<Lays>();
+    public ArrayList<Lays> ScoredLays = new ArrayList<Lays>();
+    
+    Player(String n, Game g){
+        name = n;
+        totalScore = 0;
+        details = new PlayerInfo(this);
+        isTurn = false;
+        discarded = false;
+        turns = 0;
+        g = g;
     }
+    
+    //takes in an int and adds it to the player's total score
+    public int addTotalScore(int i)
+    {
+        totalScore += i;
+        return totalScore;
+    }
+    
+    public int getTotalScore(){
 
-    public void updateScore(Player p){
-        //System.out.println(p.getTotalScore());
-        this.remove(SCORE);
-        this.remove(SERIES);
-        this.remove(SETS);
-        this.remove(H);
-        this.remove(D);
-        this.remove(S);
-        this.remove(C);
 
-        SCORE = new JLabel(" Score: " + p.getTotalScore() + " ");
-        SCORE.setFont(bigger);
-        //String series = "";
-        String sets = "";
-        String hearts = "";
-        String diamonds = "";
-        String clubs = "";
-        String spades = "";
-        for(Lays x : p.ScoredLays){
-            if(x instanceof Set){
-                sets = sets + x.toString();
-            }
-            else if(x instanceof Series){
-                //series = series + x.toString();
-                if(x.lay.get(x.lay.size()-1).getSuit().equals("Hearts"))
-                    hearts = hearts + x;
-                else if(x.lay.get(x.lay.size()-1).getSuit().equals("Diamonds"))
-                    diamonds = diamonds + x;
-                else if(x.lay.get(x.lay.size()-1).getSuit().equals("Spades"))
-                    spades = spades + x;
-                else
-                    clubs = clubs + x;
+        totalScore = totalScore + getLaysScore();
+        return totalScore;
+    }
+    
+    public int getLaysScore()
+    {
+        int score = 0;
+        
+        for(Lays l : lays)
+        {
+            /*for(Card c : l.lay)
+            {
+                for(Lays la : ScoredLays)
+                {
+                    if(!la.lay.contains(c))
+                    {
+                        score += l.getScore();
+                        ScoredLays.add(l);
+                        allLays.add(l);
+                    }
+                }
+            }*/
+            
+            score += l.getScore();
+            ScoredLays.add(l);
+            
+            if(!l.single)
+                allLays.add(l);
+            
+        }
 
+        lays.clear();
+        return score;
+    }
+    public int getHandScore()
+    {
+        int score = 0;
+        
+        for(Card c : hand)
+        {
+            score -= c.getValue();
+        }
+        
+        return score;
+    }
+    
+    public void clear(Deck deck)
+    {
+        for(Card c : hand)
+        {
+            deck.Discard(c);
+        }
+        hand.clear();
+        
+        for(Lays l : ScoredLays)
+        {
+            for(Card c : l.getCards())
+            {
+                    deck.Discard(c);
             }
         }
-        SETS = new JLabel(" Sets: " +  sets + " ");
-        SETS.setFont(bigger);
-        SERIES = new JLabel(" Series: " + " ");
-        SERIES.setFont(bigger);
-        H = new JLabel("\u2665: " + hearts);
-        H.setFont(bigger);
-        D = new JLabel("\u2666: " + diamonds);
-        D.setFont(bigger);
-        S = new JLabel("\u2660: " + spades);
-        S.setFont(bigger);
-        C = new JLabel("\u2663: " + clubs);
-        C.setFont(bigger);
-
-        add(SCORE);
-        add(SETS);
-        add(SERIES);
-        add(H);
-        add(D);
-        add(S);
-        add(C);
-        this.validate();
-        this.repaint();
+        lays.clear();
     }
 
-
-
+    public boolean TakeTurn()
+    {
+        isTurn = true;
+        discarded = false;
+        drawn = false;
+      
+        //while(turns == 0)
+            
+        while(!discarded)
+        {
+            
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(Player.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+        }
+        
+        if(hand.isEmpty())
+        {
+            
+            JOptionPane.showMessageDialog(null, "You have won! Congratulations!");
+            System.exit(0);
+            
+           
+        }
+            
+        return hand.isEmpty();
+    }
+    
+    public void addCard(Card c)
+    {
+        hand.add(c);
+    }
+    @Override
+    public String toString() {
+        return name + "\n" + "\t" + hand.toString();
+    }
 }
