@@ -102,28 +102,31 @@ public class rummyGUI extends JDesktopPane {
                 @Override
                 public void mouseClicked(MouseEvent e) {
 
-                    if (game.player.drawn) {
+                    if (game.drawn || game.pick > 0) {
                         JOptionPane.showMessageDialog(game.window, "You've already drawn this turn");
+                        game.drawn = false;
                     }
                     else {
                         Card cd = game.d.takeDiscard();
                         game.player.hand.add(cd);
                         game.playerHand.add(cd);
                         game.updateDiscard();
-                        game.player.drawn = true;
+                        game.drawn = true;
                         game.window.validate();
                         game.window.repaint();
                     }
                 }
             });
 
-            game.cardDeck = new JLabel(Card.backImg);
-            game.cardDeck.addMouseListener(new MouseAdapter() {
+            temp = new JLabel(Card.backImg);
+            temp.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
+                    System.out.println("why here");
                     game.pickCard();
                 }
             });
+            game.cardDeck = temp;
             game.centerCard.add(game.cardDeck);
             game.centerCard.add(game.discard);
             origin.validate();
