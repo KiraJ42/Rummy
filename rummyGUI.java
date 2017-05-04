@@ -1,159 +1,146 @@
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
-import java.awt.*;
-import java.awt.event.*;
-import java.io.FileReader;
-import java.io.IOException;
-import javax.swing.*;
+public class Player extends Thread{
 
-public class rummyGUI extends JDesktopPane {
-
-    static JRadioButtonMenuItem gold;
-    static JRadioButtonMenuItem red;
-    static JRadioButtonMenuItem blue;
-    static JRadioButtonMenuItem alpaca;
-    static JRadioButtonMenuItem FSU; 
+    public String name;
+    protected int totalScore;
+    public boolean isTurn;
+    public boolean discarded;
+    public boolean drawn;
+    public PlayerInfo details;
+    public static int turns;
+    public static Game g;
     
-    private JMenuItem Rummy;
-
-    static Game game;
-    static JFrame origin;
-
-    public rummyGUI(JFrame origin2, Game g) {
-
-        origin = origin2;
-        game = g;
-
-        setBackground( new Color(130,50,40) );
-
-        setLayout( new BorderLayout(3,3) );
-
-        JMenuBar mb = new JMenuBar();
-
-        JMenu set, cds;
-
-        set = new JMenu("Settings");
-
-        Rummy = new JMenuItem("Rummy");
-
-        ruleHandler ruleH = new ruleHandler();
-        Rummy.addActionListener(ruleH);
-        set.add(Rummy);
-
-        cds = new JMenu("Cards");
-
-        gold = new JRadioButtonMenuItem("Gold");
-        red =  new JRadioButtonMenuItem("Red");
-        blue = new JRadioButtonMenuItem("Blue");
-        alpaca = new JRadioButtonMenuItem("Alpaca");
-        FSU = new JRadioButtonMenuItem("FSU");
-
-        radioHandler handle = new radioHandler();
-        gold.addItemListener(handle);
-        red.addItemListener(handle);
-        blue.addItemListener(handle);
-        alpaca.addItemListener(handle);
-        FSU.addItemListener(handle);
-
-        ButtonGroup group = new ButtonGroup();
-        group.add(gold);
-        group.add(red);
-        group.add(blue);
-        group.add(alpaca);
-        group.add(FSU);
-        gold.setSelected(true);
-
-        set.add(Rummy);
-        set.add(cds);
-
-        cds.add(gold);
-        cds.add(red);
-        cds.add(blue);
-        cds.add(alpaca);
-        cds.add(FSU);
-
-        origin.setJMenuBar(mb);
-        mb.add(set);
-
-        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        setPreferredSize(new Dimension(screenSize.width*1, (screenSize.height*1)-100));
-
-
-
-    }// end constructor
-
-    private class radioHandler implements ItemListener{
-        public void itemStateChanged(ItemEvent e){
-            if(e.getSource() == gold)
-                Card.backImg = Card.getImage("Resources/images/gold_crown.png");
-            if(e.getSource() == red)
-                Card.backImg = Card.getImage("Resources/images/card back red.png");
-            if(e.getSource() == blue)
-                Card.backImg = Card.getImage("Resources/images/blue.png");
-            if(e.getSource() == alpaca)
-                Card.backImg = Card.getImage("Resources/images/alpaca.png");
-            if(e.getSource() == FSU)
-                Card.backImg = Card.getImage("Resources/images/FSU.png");
-
-            game.centerCard.remove(game.cardDeck);
-            game.cardDeck = new JLabel(Card.backImg);
-            game.cardDeck.addMouseListener(new MouseAdapter() {
-                @Override
-                public void mouseClicked(MouseEvent e) {
-                    game.pickCard();
-                }
-            });
-            game.centerCard.add(game.cardDeck);
-            origin.validate();
-            origin.repaint();
-        }
+    public ArrayList<Card> hand = new ArrayList<Card>();
+    public ArrayList<Card> checkLay = new ArrayList<Card>();
+    public ArrayList<Lays> lays = new ArrayList<Lays>();
+    public static ArrayList<Lays> allLays = new ArrayList<Lays>();
+    public ArrayList<Lays> ScoredLays = new ArrayList<Lays>();
+    
+    Player(String n, Game g){
+        name = n;
+        totalScore = 0;
+        details = new PlayerInfo(this);
+        isTurn = false;
+        discarded = false;
+        turns = 0;
+        g = g;
     }
+    
+    //takes in an int and adds it to the player's total score
+    public int addTotalScore(int i)
+    {
+        totalScore += i;
+        return totalScore;
+    }
+    
+    public int getTotalScore(){
 
-    protected void openRules(String input) {
 
-        String path = "Error";
-        if(input.equals("Rummy"))
-            path = "Rummy";
-        if(input.equals("Gin Rummy"))
-            path = "Gin Rummy";
-        JDialog dialog = new JDialog();
-        JTextArea rulesText = new JTextArea();
-        FileReader reader = null;
-        try {
-            String filename = "Rules/"+path+".txt";
-            reader = new FileReader(filename);
-            rulesText.read(reader, filename);
-
-        }catch (IOException ie){
-            //put something here
-        }finally{
-            if(reader != null){
-                try{
-                    reader.close();
-                }catch(IOException e){
-                    //something here too
+        totalScore = totalScore + getLaysScore();
+        return totalScore;
+    }
+    
+    public int getLaysScore()
+    {
+        int score = 0;
+        
+        for(Lays l : lays)
+        {
+            /*for(Card c : l.lay)
+            {
+                for(Lays la : ScoredLays)
+                {
+                    if(!la.lay.contains(c))
+                    {
+                        score += l.getScore();
+                        ScoredLays.add(l);
+                        allLays.add(l);
+                    }
                 }
+            }*/
+            
+            score += l.getScore();
+            ScoredLays.add(l);
+            
+            if(!l.single)
+                allLays.add(l);
+            
+        }
+
+        lays.clear();
+        return score;
+    }
+    public int getHandScore()
+    {
+        int score = 0;
+        
+        for(Card c : hand)
+        {
+            score -= c.getValue();
+        }
+        
+        return score;
+    }
+    
+    public void clear(Deck deck)
+    {
+        for(Card c : hand)
+        {
+            deck.Discard(c);
+        }
+        hand.clear();
+        
+        for(Lays l : ScoredLays)
+        {
+            for(Card c : l.getCards())
+            {
+                    deck.Discard(c);
             }
         }
-
-        JScrollPane scroll = new JScrollPane(rulesText, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
-        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-
-        dialog.setTitle(path + " Rules");
-        dialog.add(scroll);
-        dialog.setSize(new Dimension((screenSize.width/2) + 100, (screenSize.height*1)-50 ));
-        dialog.setLocation(100, 10);
-        dialog.setVisible(true);
-
+        lays.clear();
     }
 
-    private class ruleHandler implements ActionListener{
-
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            if(e.getSource() == Gin)
-                openRules("Gin Rummy");
-            if(e.getSource() == Rummy)
-                openRules("Rummy");
+    public boolean TakeTurn()
+    {
+        isTurn = true;
+        discarded = false;
+        drawn = false;
+      
+        //while(turns == 0)
+            
+        while(!discarded)
+        {
+            
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(Player.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
         }
+        
+        if(hand.isEmpty())
+        {
+            
+            JOptionPane.showMessageDialog(null, "You have won! Congratulations!");
+            System.exit(0);
+            
+           
+        }
+            
+        return hand.isEmpty();
+    }
+    
+    public void addCard(Card c)
+    {
+        hand.add(c);
+    }
+    @Override
+    public String toString() {
+        return name + "\n" + "\t" + hand.toString();
     }
 }
