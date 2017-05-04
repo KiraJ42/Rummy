@@ -103,7 +103,13 @@ public class Game {
         cardDeck.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                pickCard();
+                if(player.drawn)
+                    JOptionPane.showMessageDialog(window, "You've already drawn this turn");
+                else
+                {
+                    pickCard();
+                    player.drawn = true;
+                }
             }
         });
 
