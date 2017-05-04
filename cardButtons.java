@@ -1,71 +1,118 @@
+//import sun.plugin2.message.transport.SerializingTransport;
+
 import javax.swing.*;
+import javax.swing.border.Border;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.util.Scanner;
 
-public class cardButtons extends JPanel {
+public class PlayerInfo extends JPanel {
 
-    static JButton discard;
-    static JButton check;
-    static Game g;
-    cardButtons(Game game) {
-        g = game;
-        discard = new JButton("Discard");
-        discard.addActionListener(new checkCard());
-        check = new JButton("Check Selection");
-        check.addActionListener(new checkCard());
+    protected JLabel SCORE;
+    protected JLabel SETS;
+    protected JLabel SERIES;
+    protected JLabel H;
+    protected JLabel D;
+    protected JLabel S;
+    protected JLabel C;
+    protected Player player;
+    protected Font bigger;
 
-        setBackground(new Color(130, 50, 40));
+    public PlayerInfo(Player p){
+        setBackground(new Color (250, 250, 210));
+        Border border = BorderFactory.createLineBorder(Color.BLACK, 3);
+        setBorder(border);
 
-        add(Box.createVerticalStrut(10));
-        add(discard);
-        add(Box.createVerticalStrut(10));
-        add(check);
+        player = p;
+        setLayout(new GridLayout(0,1));
+        JLabel name = new JLabel(" Player Name: " + p.name + " ");
+        Font font = name.getFont();
+        bigger = new Font(font.getFontName(), Font.PLAIN, 16);
+        name.setFont(bigger);
+        SCORE = new JLabel(" Score: " + p.getTotalScore() + " ");
+        SCORE.setFont(bigger);
+        SETS = new JLabel(" Sets: " +  " ");
+        SETS.setFont(bigger);
+        SERIES = new JLabel(" Series: " + " ");
+        SERIES.setFont(bigger);
+        H = new JLabel("\u2665: " + " ");
+        H.setFont(bigger);
+        D = new JLabel("\u2666: " + " ");
+        D.setFont(bigger);
+        S = new JLabel("\u2660: " + " ");
+        S.setFont(bigger);
+        C = new JLabel("\u2663: " + " ");
+        C.setFont(bigger);
+
+        add(name);
+        add(SCORE);
+        add(SETS);
+        add(SERIES);
+        add(H);
+        add(D);
+        add(S);
+        add(C);
     }
 
-    public class checkCard implements ActionListener {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            Player p = g.player;
-            if(p.checkLay.size() == 1 && e.getSource() == discard) {
-                Card r = p.checkLay.get(0);
-                g.playerHand.updateH(p.hand.indexOf(r));
-                p.hand.remove(r);
-                g.d.Discard(r);
-                p.checkLay.clear();
-                g.updateDiscard();
-                g.window.validate();
-                g.window.repaint();
-            }else if(p.checkLay.size() > 1 && e.getSource() == check) {
-                if (Set.isValid(p.checkLay)) {
-                    p.lays.add(new Set(p.checkLay));
-                    for (Card x : p.checkLay) {
-                        g.playerHand.updateH(p.hand.indexOf(x));
-                        p.hand.remove(x);
-                    }
-                    p.checkLay.clear();
-                    p.details.updateScore(p);
-                    g.window.validate();
-                    g.window.repaint();
-                } else if (Series.isValid(p.checkLay)) {
-                    p.lays.add(new Series(p.checkLay));
-                    for (Card x : p.checkLay) {
-                        g.playerHand.updateH(p.hand.indexOf(x));
-                        p.hand.remove(x);
-                    }
-                    p.checkLay.clear();
-                    p.details.updateScore(p);
-                    g.window.validate();
-                    g.window.repaint();
-                }
-            } else if(p.checkLay.size() == 1 && e.getSource() == check) {
+    public void updateScore(Player p){
+        //System.out.println(p.getTotalScore());
+        this.remove(SCORE);
+        this.remove(SERIES);
+        this.remove(SETS);
+        this.remove(H);
+        this.remove(D);
+        this.remove(S);
+        this.remove(C);
 
-            }else if (p.checkLay.size() > 1 && e.getSource() == discard) {
-                    JOptionPane.showMessageDialog(g.window, "You cannot discard multiple cards");
-            }else{
-                    JOptionPane.showMessageDialog(g.window, "Not a valid Set or Series");
+        SCORE = new JLabel(" Score: " + p.getTotalScore() + " ");
+        SCORE.setFont(bigger);
+        //String series = "";
+        String sets = "";
+        String hearts = "";
+        String diamonds = "";
+        String clubs = "";
+        String spades = "";
+        for(Lays x : p.ScoredLays){
+            if(x instanceof Set){
+                sets = sets + x.toString();
             }
+            else if(x instanceof Series){
+                //series = series + x.toString();
+                if(x.lay.get(x.lay.size()-1).getSuit().equals("Hearts"))
+                    hearts = hearts + x;
+                else if(x.lay.get(x.lay.size()-1).getSuit().equals("Diamonds"))
+                    diamonds = diamonds + x;
+                else if(x.lay.get(x.lay.size()-1).getSuit().equals("Spades"))
+                    spades = spades + x;
+                else
+                    clubs = clubs + x;
 
+            }
         }
+        SETS = new JLabel(" Sets: " +  sets + " ");
+        SETS.setFont(bigger);
+        SERIES = new JLabel(" Series: " + " ");
+        SERIES.setFont(bigger);
+        H = new JLabel("\u2665: " + hearts);
+        H.setFont(bigger);
+        D = new JLabel("\u2666: " + diamonds);
+        D.setFont(bigger);
+        S = new JLabel("\u2660: " + spades);
+        S.setFont(bigger);
+        C = new JLabel("\u2663: " + clubs);
+        C.setFont(bigger);
+
+        add(SCORE);
+        add(SETS);
+        add(SERIES);
+        add(H);
+        add(D);
+        add(S);
+        add(C);
+        this.validate();
+        this.repaint();
     }
+
+
+
 }
