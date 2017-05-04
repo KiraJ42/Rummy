@@ -65,7 +65,9 @@ public class Player extends Thread{
             
             score += l.getScore();
             ScoredLays.add(l);
-            allLays.add(l);
+            
+            if(!l.single)
+                allLays.add(l);
             
         }
 
