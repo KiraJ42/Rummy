@@ -4,10 +4,6 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
-
-/**
- * Created by Owner on 3/28/2017.
- */
 public class Game {
 
     public static Rules rule;
@@ -15,7 +11,7 @@ public class Game {
     public static Deck d;
     public JFrame window;
     public playerHandGUI playerHand;
-    public JLabel discard;
+    public JLabel discard = new JLabel();
     public Player player;
     public JLabel cardDeck = new JLabel();
     public JPanel centerCard = new JPanel();
@@ -99,7 +95,6 @@ public class Game {
         
         centerBtns.add(buttonPanel);
         Card.backImg = Card.getImage(Card.back);
-        cardDeck = new JLabel(Card.backImg);
         cardDeck.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -122,20 +117,6 @@ public class Game {
 
         window.validate();
         window.repaint();
-
-
-     /*   if(gameType.equals("Rummy"))
-            rule = new Rummy(num, name);
-        else
-            rule = new GinRummy(num, name);
-
-       while(!rule.victoryCheck()) {
-           rule.deal();
-
-           while (!rule.nextTurn()) ;
-
-           rule.endRound();
-       }*/
     }
     
     public static void main(String[] args) 
@@ -166,12 +147,19 @@ public class Game {
             discard.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
-                    Card cd = d.takeDiscard();
-                    player.hand.add(cd);
-                    playerHand.add(cd);
-                    updateDiscard();
-                    window.validate();
-                    window.repaint();
+
+                    if (player.drawn) {
+                        JOptionPane.showMessageDialog(window, "You've already drawn this turn");
+                    }
+                    else {
+                        Card cd = d.takeDiscard();
+                        player.hand.add(cd);
+                        playerHand.add(cd);
+                        updateDiscard();
+                        player.drawn = true;
+                        window.validate();
+                        window.repaint();
+                    }
                 }
             });
             parent.add(discard);
