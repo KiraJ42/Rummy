@@ -5,7 +5,8 @@ public class Set extends Lays{
 
     Set(ArrayList<Card> cards)
     {
-        lay = cards;
+        lay = new ArrayList<>();
+        lay.addAll(cards);
         score = 0;
         
         for(Card c : lay)
@@ -48,7 +49,7 @@ public class Set extends Lays{
     
     @Override
     public String toString() {
-        Card c = lay.get(lay.size() - 1);
-        return  c.getRank();
+        Card c = lay.get(0);
+        return  c.getRank() + ", ";
     }
 }
