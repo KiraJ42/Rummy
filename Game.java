@@ -10,9 +10,9 @@ import java.util.ArrayList;
  */
 public class Game {
 
-    public String gameType;
-    public ArrayList<Player> players;
-    public Deck d;
+    public static Rules rule;
+    public static ArrayList<Player> players;
+    public static Deck d;
     public JFrame window;
     public playerHandGUI playerHand;
     public JLabel discard;
@@ -23,7 +23,7 @@ public class Game {
 
     Game() {
         window = new JFrame("Rummy");
-        Rules rule;
+        //Rules rule;
      
         rummyGUI content = new rummyGUI(window, this);
         window.setContentPane(content);
@@ -33,7 +33,7 @@ public class Game {
         window.setVisible(true);
 
         String name = JOptionPane.showInputDialog(window, "Enter Your Name:", "Welcome to Rummy!", JOptionPane.PLAIN_MESSAGE);
-        player = new Player(name);
+        player = new Player(name, this);
         Integer[] playerNum = {2, 3, 4};
         Integer num = (Integer) JOptionPane.showInputDialog(window, "How many players in your game?", "Players",JOptionPane.QUESTION_MESSAGE, null, playerNum, playerNum[0]);
 
@@ -47,7 +47,7 @@ public class Game {
         centerCard.setBackground(new Color(130,50,40));
         center.setBackground( new Color(130,50,40) );
         scores.setBackground( new Color(130,50,40) );
-
+ 
         d = new Deck();
 
         d.shuffle();
@@ -56,11 +56,13 @@ public class Game {
         players.add(player);
 
         for(int i = 0; i < (num-1); i++)
-            players.add(new Player("Player" + (i+2)));
+            players.add(new Computer(i + 2, this));
 
         for(Player p : players) {
             scores.add(p.details);
         }
+        
+        rule = new Rummy(this);
         window.add(scores, BorderLayout.NORTH);
 
         d.Deal(7, players);
@@ -79,15 +81,22 @@ public class Game {
         discard.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                Card cd = d.takeDiscard();
-                player.hand.add(cd);
-                playerHand.add(cd);
-                updateDiscard();
-                window.validate();
-                window.repaint();
+                
+                if(player.drawn)
+                    JOptionPane.showMessageDialog(window, "You've already drawn this turn");
+                else
+                {
+                    player.drawn = true;
+                    Card cd = d.takeDiscard();
+                    player.hand.add(cd);
+                    playerHand.add(cd);
+                    updateDiscard();
+                    window.validate();
+                    window.repaint();
+                }
             }
         });
-
+        
         centerBtns.add(buttonPanel);
         Card.backImg = Card.getImage(Card.back);
         cardDeck = new JLabel(Card.backImg);
@@ -122,7 +131,25 @@ public class Game {
            rule.endRound();
        }*/
     }
-    public static void main(String[] args) {Game game = new Game();}
+    
+    public static void main(String[] args) 
+    {
+        Game game = new Game();
+        int winner;
+        while(!Game.rule.victoryCheck())
+        {
+            winner = Game.rule.playRound();
+            
+            if(winner != 0)
+                JOptionPane.showMessageDialog(game.window, "Player " + winner + " has won the round!!");
+            
+            else
+                JOptionPane.showMessageDialog(game.window, "You have won the round!!");
+            
+            d.Deal(7, players);
+        }
+        
+    }
 
     public void updateDiscard(){
         if(d.getDiscard().size() > 0) {
@@ -156,10 +183,17 @@ public class Game {
     }
     public void pickCard() {
         Player p = players.get(0);
-        Card newC = d.takeCard();
-        p.hand.add(newC);
-        playerHand.add(newC);
-        window.validate();
-        window.repaint();
+        
+        if(p.drawn)
+            JOptionPane.showMessageDialog(window, "You've already drawn this turn");
+        else
+        {
+            Card newC = d.takeCard();
+            p.hand.add(newC);
+            playerHand.add(newC);
+            p.drawn = true;
+            window.validate();
+            window.repaint();
+        }
     }
 }
