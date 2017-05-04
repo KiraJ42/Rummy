@@ -51,6 +51,10 @@ public class cardButtons extends JPanel {
                     }
                     p.checkLay.clear();
                     p.details.updateScore(p);
+                    if(p.hand.isEmpty()) {
+                        JOptionPane.showMessageDialog(null, "You have won! Congratulations!");
+                        System.exit(0);
+                    }
                     g.window.validate();
                     g.window.repaint();
                 } else if (Series.isValid(p.checkLay)) {
@@ -61,9 +65,15 @@ public class cardButtons extends JPanel {
                     }
                     p.checkLay.clear();
                     p.details.updateScore(p);
+                    if(p.hand.isEmpty()) {
+                        JOptionPane.showMessageDialog(null, "You have won! Congratulations!");
+                        System.exit(0);
+                    }
                     g.window.validate();
                     g.window.repaint();
                 }
+
+                System.out.println(p.hand.size());
             } else if(p.checkLay.size() == 1 && e.getSource() == check) {
                 Card n = p.checkLay.get(0);
                 System.out.println("Trying to add a single card");
@@ -89,12 +99,14 @@ public class cardButtons extends JPanel {
                        }
 
                     }
-                    else
-                        JOptionPane.showMessageDialog(g.window, "Not a valid addition to any set or series");
                 }
                 
                 p.checkLay.clear();
                 p.details.updateScore(p);
+                if(p.hand.isEmpty()) {
+                    JOptionPane.showMessageDialog(null, "You have won! Congratulations!");
+                    System.exit(0);
+                }
                 g.window.validate();
                 g.window.repaint();
 
@@ -103,7 +115,7 @@ public class cardButtons extends JPanel {
             }else if(e.getSource() == discard){
                     JOptionPane.showMessageDialog(g.window, "You must select a card to discard");
             }else if(e.getSource() == check){
-                    JOptionPane.showMessageDialog(g.window, "Not a valid lay");
+                    JOptionPane.showMessageDialog(g.window, "Not a valid lay or addition to a lay");
             }
 
         }
