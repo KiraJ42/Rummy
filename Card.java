@@ -40,7 +40,7 @@ public class Card {
 
     public static ImageIcon getImage(String path){
         try {
-            InputStream is = Card.class.getResourceAsStream(back);
+            InputStream is = Card.class.getResourceAsStream(path);
             Image image = ImageIO.read(is);
            Image img = image.getScaledInstance(140,200, Image.SCALE_SMOOTH);
             return new ImageIcon(img);
@@ -48,28 +48,6 @@ public class Card {
             System.out.println("File not found");
         }
         return new ImageIcon();
-    }
-
-   static public void changeBack(String p){
-        String path = "Resources/images/gold_crown.png";
-
-        if(p.equals("gold"))
-            path = "Resources/images/gold_crown.png";
-        if(p.equals("red"))
-            path = "Resources/images/card back red.png";
-        if(p.equals("blue"))
-            path = "Resources/images/blue.png";
-        back = path;
-
-       try {
-           InputStream is = new BufferedInputStream(new FileInputStream(back));
-           Image image = ImageIO.read(is);
-           Image img = image.getScaledInstance(140,200, Image.SCALE_SMOOTH);
-           backImg = new ImageIcon(img);
-       }catch(Exception e){
-           System.out.println("File not found");
-       }
-       backImg = new ImageIcon();
     }
 
     public void makeImage(){
