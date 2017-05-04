@@ -1,146 +1,82 @@
-import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.JOptionPane;
+import java.util.*;
 
-public class Player extends Thread{
+public class Series extends Lays {
+    //CAN ONLY BE USED AFTER AN ISVALID CHECK OF C
 
-    public String name;
-    protected int totalScore;
-    public boolean isTurn;
-    public boolean discarded;
-    public boolean drawn;
-    public PlayerInfo details;
-    public static int turns;
-    public static Game g;
     
-    public ArrayList<Card> hand = new ArrayList<Card>();
-    public ArrayList<Card> checkLay = new ArrayList<Card>();
-    public ArrayList<Lays> lays = new ArrayList<Lays>();
-    public static ArrayList<Lays> allLays = new ArrayList<Lays>();
-    public ArrayList<Lays> ScoredLays = new ArrayList<Lays>();
-    
-    Player(String n, Game g){
-        name = n;
-        totalScore = 0;
-        details = new PlayerInfo(this);
-        isTurn = false;
-        discarded = false;
-        turns = 0;
-        g = g;
-    }
-    
-    //takes in an int and adds it to the player's total score
-    public int addTotalScore(int i)
+    Series(ArrayList<Card> cards)
     {
-        totalScore += i;
-        return totalScore;
-    }
-    
-    public int getTotalScore(){
-
-
-        totalScore = totalScore + getLaysScore();
-        return totalScore;
-    }
-    
-    public int getLaysScore()
-    {
-        int score = 0;
+        lay = new ArrayList<>();
+        lay.addAll(cards);
         
-        for(Lays l : lays)
-        {
-            /*for(Card c : l.lay)
-            {
-                for(Lays la : ScoredLays)
-                {
-                    if(!la.lay.contains(c))
-                    {
-                        score += l.getScore();
-                        ScoredLays.add(l);
-                        allLays.add(l);
-                    }
-                }
-            }*/
-            
-            score += l.getScore();
-            ScoredLays.add(l);
-            
-            if(!l.single)
-                allLays.add(l);
-            
-        }
-
-        lays.clear();
-        return score;
-    }
-    public int getHandScore()
-    {
-        int score = 0;
+        score = 0;
         
-        for(Card c : hand)
+        for(Card c : lay)
         {
-            score -= c.getValue();
+            score += c.getValue();
         }
-        
-        return score;
     }
     
-    public void clear(Deck deck)
+    Series(Card c)
     {
-        for(Card c : hand)
-        {
-            deck.Discard(c);
-        }
-        hand.clear();
+        lay = new ArrayList<>();
+        lay.add(c);
         
-        for(Lays l : ScoredLays)
-        {
-            for(Card c : l.getCards())
-            {
-                    deck.Discard(c);
-            }
-        }
-        lays.clear();
+        score = c.getValue();
+        
+        single = true;
     }
-
-    public boolean TakeTurn()
+  
+    public static boolean isValid(ArrayList<Card> cards)
     {
-        isTurn = true;
-        discarded = false;
-        drawn = false;
+        String suit;
+        int next = 1 + cards.get(0).getIntRank();
       
-        //while(turns == 0)
-            
-        while(!discarded)
-        {
-            
-            try {
-                Thread.sleep(500);
-            } catch (InterruptedException ex) {
-                Logger.getLogger(Player.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            
-        }
+        if(cards.size() < 3)
+            return false;
         
-        if(hand.isEmpty())
+        suit = cards.get(0).getSuit();
+        
+        Collections.sort(cards, new Comparator<Card>(){
+                        public int compare(Card a, Card b){
+                            Integer A = a.getIntRank();
+                            Integer B = b.getIntRank();
+                            return A.compareTo(B);
+                        }
+        });
+      
+        for(int i = 1; i < cards.size(); i++)
         {
-            
-            JOptionPane.showMessageDialog(null, "You have won! Congratulations!");
-            System.exit(0);
-            
-           
+            if(next != cards.get(i).getIntRank() || !suit.equals(cards.get(i).getSuit()))
+                return false;
+          
+            next = 1 + cards.get(i).getIntRank();
         }
-            
-        return hand.isEmpty();
+      
+        return true;
     }
     
-    public void addCard(Card c)
+    @Override
+    public boolean addCard(Card c)
     {
-        hand.add(c);
+        //boolean valid = false;
+        lay.add(c);
+        
+        if(isValid(lay))
+            return true;
+   
+        
+        lay.remove(c);
+        return false;      
     }
+
     @Override
     public String toString() {
-        return name + "\n" + "\t" + hand.toString();
+        String print = "";
+        
+        for( Card x : lay){
+            print = print + x.getRank() + ", ";
+        }
+        return print;
     }
 }
