@@ -4,13 +4,11 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.awt.event.*;
 
-/**
- * Created by Owner on 4/29/2017.
- */
 public class playerHandGUI extends JPanel{
 
     static Player player;
     static ArrayList<JLabel> hand;
+
     playerHandGUI(Player p) {
         super();
         hand = new ArrayList<>();
