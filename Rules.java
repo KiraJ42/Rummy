@@ -4,9 +4,9 @@ public abstract class Rules
 {
     ArrayList<Player> players;
     int numCards;
-    int current;
+    //int current;
     Deck deck;
-    
+    Game game;
     public abstract boolean victoryCheck();
     
     public abstract void deal();
@@ -15,18 +15,14 @@ public abstract class Rules
     public abstract void endRound();
     
     //increases current
-    public abstract boolean nextTurn();
+    public abstract int playRound();
     
-    Rules(int numP, String n)
+    Rules(Game g)
     {
-        players.add(new Player(n));
-        
-        for(int i = 1; i < numP; i++)
-        {
-            players.add(new Player("Player " + i));
-        }
-        
-        current = 0;
+        players = g.players;
+        deck = g.d;
+        game = g;
+        //current = 0;
     }
     
     public int getPlayerScore(int i)
