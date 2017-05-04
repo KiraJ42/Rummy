@@ -1,7 +1,6 @@
-  The game is best played with two to four players, but up to six can take part. Either a fixed number of deals are
-  played, or the game is played to a target score. The number of deals or the target score needs to be agreed before
-  beginning to play.
-
+  The game is best played with two three, or four players The game end when one player has no more cards in their hand.
+  When one player has emptied their hand the player with the highest score is the winner.
+  
   THE DECK
 
   One standard deck of 52 cards is used. Cards in each suit rank, from low to high:
@@ -28,10 +27,11 @@
 
   A group, set or book is three or four cards of the same rank, such as diamond7, heart7, spade7.
 
-  Laying off is adding a card or cards from your hand to any meld already on the table, even if is not your meld. The cards added to a meld must make another valid meld. For example to the club4, club5, club6 you could add the club3 or the club7.
-  You are not permitted to rearrange the melds in the process. For example, club2, heart2, diamond2, spade2
-  and spade3, spade4, spade5 have been melded, you are not permitted to move the spade2 from the group to the
-  sequence, so as to lay off the spadeA.
+  Laying off is adding a card or cards from your hand to any meld already on the table, even if is not your meld. 
+  The cards added to a meld must make another valid meld. For example to the club4, club5, club6 you could add 
+  the club3 or the club7. You are not permitted to rearrange the melds in the process. 
+  For example, club2, heart2, diamond2, spade2 and spade3, spade4, spade5 have been melded, you are not permitted to 
+  move the spade2 from the group to the sequence, so as to lay off the spadeA.
 
   Discarding is playing a card from your hand on top of the discard pile. You get rid of one card this way at the
   end of each turn.
@@ -48,23 +48,20 @@
   committed yourself to take it. If you draw from the stock, you add the card to your hand without showing it to
   the other players.
 
-  Melding. If you have valid groups or sequences in your hand, you may lay as many melds as you can make face up on the
+  Melding: If you have valid groups or sequences in your hand, you may lay as many melds as you can make face up on the
   table in front of you. Melding is optional; you are not obliged to meld just because you can.
 
-  Laying off. This is also optional. If you wish, you may add cards to groups or sequences previously melded by
-  yourself or others. There is no limit to the number of cards a player may lay off in one turn.
+  Laying off: This is also optional. If you wish, you may add cards to groups or sequences previously melded by
+  yourself or others. There is no limit to the number of cards a player may lay off in one turn. The points for each 
+  card laid off will be added to the score of the player who laid off the card.
 
-  The Discard At the end of your turn, one card must be discarded from your hand and placed on top of the discard
-  pile face up. If you began your turn by picking up the top card of the discard pile you are not allowed to end that
-  turn by discarding the same card, leaving the pile unchanged - you must discard a different card. You may however
-  pick up the discard on one turn and discard that same card at a later turn. If you draw a card from the stock, it
-  can be discarded on the same turn if you wish.
+  The Discard: At the end of your turn, one card must be discarded from your hand and placed on top of the discard
+  pile face up. You may discard any card, but you may not discard multiple cards. Once you discard your turn has ended.
 
-  If the stock pile has run out and the next player does not want to take the discard, the discard pile is turned
-  over, without shuffling, to form a new stock, and play continues - but see the variations section for a discussion
-  of alternatives and problems that can arise.
+  If the stock pile has run out the discard pile, save the top card, will be automatically shuffled and added to the 
+  stock so as to continue play.
 
-  A player wins an individual hand by either melding, laying off, or discarding all of his or her cards.
+  A player wins by either melding, laying off, or discarding all of his or her cards.
   Getting rid of your last card in one of these ways is called going out. As soon as someone goes out, play ceases.
   There can be no further melding or laying off, even if the other players have valid combinations in their hands.
 
@@ -73,10 +70,9 @@
   When a player goes out, the other players add up the value of all the cards still remaining in their hands,
   as follows:
 
-  Face cards (K,Q,J) are worth 10 points each
-  Aces are worth 1 point each
-  Number Cards are worth their face value - for example a six is worth 6 points, a four is 4 points, and so on.
-  The total value of all the cards in the hands of the other players is added to the winner's cumulative score.
+  Face cards (K,Q,J) and 10 are worth 10 points each
+  Aces are worth 20 point each.
+  Number Cards are worth 5 points each.
+  Players with cards left in their hand will have the points in their hand subtracted from their total score
 
-  The game continues with further deals until a player reaches the points target that was decided before the game
-  began, or until the agreed number of deals has been played.
+  The player with the highest score wins the game.
