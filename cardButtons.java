@@ -44,7 +44,7 @@ public class cardButtons extends JPanel {
                         p.hand.remove(x);
                     }
                     p.checkLay.clear();
-                    p.details.updateScore();
+                    p.details.updateScore(p);
                     g.window.validate();
                     g.window.repaint();
                 } else if (Series.isValid(p.checkLay)) {
@@ -54,9 +54,12 @@ public class cardButtons extends JPanel {
                         p.hand.remove(x);
                     }
                     p.checkLay.clear();
+                    p.details.updateScore(p);
                     g.window.validate();
                     g.window.repaint();
                 }
+            } else if(p.checkLay.size() == 1 && e.getSource() == check) {
+
             }else if (p.checkLay.size() > 1 && e.getSource() == discard) {
                     JOptionPane.showMessageDialog(g.window, "You cannot discard multiple cards");
             }else{
