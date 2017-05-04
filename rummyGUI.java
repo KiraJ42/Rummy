@@ -7,12 +7,13 @@ import javax.swing.*;
 
 public class rummyGUI extends JDesktopPane {
 
-    static JRadioButtonMenuItem gold;
-    static JRadioButtonMenuItem red;
-    static JRadioButtonMenuItem blue;
+    private JRadioButtonMenuItem gold;
+    private JRadioButtonMenuItem red;
+    private JRadioButtonMenuItem blue;
+    private JRadioButtonMenuItem alpaca;
 
-    static JMenuItem Gin;
-    static JMenuItem Rummy;
+    private JMenuItem Gin;
+    private JMenuItem Rummy;
 
     static Game game;
     static JFrame origin;
@@ -34,6 +35,9 @@ public class rummyGUI extends JDesktopPane {
         menu = new JMenu("Game");
         newG = new JMenuItem("New Game");
 
+        gameHandler newGame = new gameHandler();
+        newG.addActionListener(newGame);
+
         set = new JMenu("Settings");
 
         rules = new JMenu("Rules");
@@ -52,16 +56,19 @@ public class rummyGUI extends JDesktopPane {
         gold = new JRadioButtonMenuItem("Gold");
         red =  new JRadioButtonMenuItem("Red");
         blue = new JRadioButtonMenuItem("Blue");
+        alpaca = new JRadioButtonMenuItem("Alpaca");
 
         radioHandler handle = new radioHandler();
         gold.addItemListener(handle);
         red.addItemListener(handle);
         blue.addItemListener(handle);
+        alpaca.addItemListener(handle);
 
         ButtonGroup group = new ButtonGroup();
         group.add(gold);
         group.add(red);
         group.add(blue);
+        group.add(alpaca);
         gold.setSelected(true);
 
         set.add(rules);
@@ -70,6 +77,7 @@ public class rummyGUI extends JDesktopPane {
         cds.add(gold);
         cds.add(red);
         cds.add(blue);
+        cds.add(alpaca);
 
         menu.add(newG);
         menu.add(set);
@@ -87,12 +95,23 @@ public class rummyGUI extends JDesktopPane {
     private class radioHandler implements ItemListener{
         public void itemStateChanged(ItemEvent e){
             if(e.getSource() == gold)
-                Card.changeBack("gold");
+                Card.backImg = Card.getImage("images/gold_crown.png");
             if(e.getSource() == red)
-                Card.changeBack("red");
+                Card.backImg = Card.getImage("images/card back red.png");
             if(e.getSource() == blue)
-                Card.changeBack("blue");
+                Card.backImg = Card.getImage("images/blue.png");
+            if(e.getSource() == alpaca)
+                Card.backImg = Card.getImage("images/alpaca.png");
 
+            game.centerCard.remove(game.cardDeck);
+            game.cardDeck = new JLabel(Card.backImg);
+            game.cardDeck.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    game.pickCard();
+                }
+            });
+            game.centerCard.add(game.cardDeck);
             origin.validate();
             origin.repaint();
         }
@@ -144,6 +163,20 @@ public class rummyGUI extends JDesktopPane {
                 openRules("Gin Rummy");
             if(e.getSource() == Rummy)
                 openRules("Rummy");
+        }
+    }
+
+    private class gameHandler implements ActionListener{
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            for(Player p : game.players){
+                p.clear(game.d);
+                p.totalScore = 0;
+                game.d.Deal(7, game.players);
+            }
+            game.window.validate();
+            game.window.repaint();
         }
     }
 }
