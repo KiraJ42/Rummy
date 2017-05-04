@@ -1,146 +1,111 @@
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.JOptionPane;
 
-public class Player extends Thread{
+public class cardButtons extends JPanel {
 
-    public String name;
-    protected int totalScore;
-    public boolean isTurn;
-    public boolean discarded;
-    public boolean drawn;
-    public PlayerInfo details;
-    public static int turns;
-    public static Game g;
+    static JButton discard;
+    static JButton check;
+    static Game g;
     
-    public ArrayList<Card> hand = new ArrayList<Card>();
-    public ArrayList<Card> checkLay = new ArrayList<Card>();
-    public ArrayList<Lays> lays = new ArrayList<Lays>();
-    public static ArrayList<Lays> allLays = new ArrayList<Lays>();
-    public ArrayList<Lays> ScoredLays = new ArrayList<Lays>();
-    
-    Player(String n, Game g){
-        name = n;
-        totalScore = 0;
-        details = new PlayerInfo(this);
-        isTurn = false;
-        discarded = false;
-        turns = 0;
-        g = g;
+    cardButtons(Game game) {
+        g = game;
+        discard = new JButton("Discard");
+        discard.addActionListener(new checkCard());
+        check = new JButton("Check Selection");
+        check.addActionListener(new checkCard());
+
+        setBackground(new Color(130, 50, 40));
+
+        add(Box.createVerticalStrut(10));
+        add(discard);
+        add(Box.createVerticalStrut(10));
+        add(check);
     }
-    
-    //takes in an int and adds it to the player's total score
-    public int addTotalScore(int i)
-    {
-        totalScore += i;
-        return totalScore;
-    }
-    
-    public int getTotalScore(){
 
-
-        totalScore = totalScore + getLaysScore();
-        return totalScore;
-    }
     
-    public int getLaysScore()
-    {
-        int score = 0;
-        
-        for(Lays l : lays)
-        {
-            /*for(Card c : l.lay)
-            {
-                for(Lays la : ScoredLays)
-                {
-                    if(!la.lay.contains(c))
-                    {
-                        score += l.getScore();
-                        ScoredLays.add(l);
-                        allLays.add(l);
+    
+     public class checkCard implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            Player p = g.player;
+            if(p.checkLay.size() == 1 && e.getSource() == discard) {
+                Card r = p.checkLay.get(0);
+                g.playerHand.updateH(p.hand.indexOf(r));
+                p.hand.remove(r);
+                g.d.Discard(r);
+                p.checkLay.clear();
+                g.updateDiscard();
+                Player.turns++;
+                p.discarded = true;
+                g.window.validate();
+                g.window.repaint();
+            }else if(p.checkLay.size() > 1 && e.getSource() == check) {
+                if (Set.isValid(p.checkLay)) {
+                    p.lays.add(new Set(p.checkLay));
+                    for (Card x : p.checkLay) {
+                        g.playerHand.updateH(p.hand.indexOf(x));
+                        p.hand.remove(x);
                     }
+                    p.checkLay.clear();
+                    p.details.updateScore(p);
+                    g.window.validate();
+                    g.window.repaint();
+                } else if (Series.isValid(p.checkLay)) {
+                    p.lays.add(new Series(p.checkLay));
+                    for (Card x : p.checkLay) {
+                        g.playerHand.updateH(p.hand.indexOf(x));
+                        p.hand.remove(x);
+                    }
+                    p.checkLay.clear();
+                    p.details.updateScore(p);
+                    g.window.validate();
+                    g.window.repaint();
                 }
-            }*/
-            
-            score += l.getScore();
-            ScoredLays.add(l);
-            
-            if(!l.single)
-                allLays.add(l);
-            
-        }
+            } else if(p.checkLay.size() == 1 && e.getSource() == check) {
+                Card n = p.checkLay.get(0);
+                System.out.println("Trying to add a single card");
+                for(Lays l : Player.allLays)
+                {
+                    if(l.addCard(n))
+                    {
+                       System.out.println("found a matching lay!");
+                      
 
-        lays.clear();
-        return score;
-    }
-    public int getHandScore()
-    {
-        int score = 0;
-        
-        for(Card c : hand)
-        {
-            score -= c.getValue();
-        }
-        
-        return score;
-    }
-    
-    public void clear(Deck deck)
-    {
-        for(Card c : hand)
-        {
-            deck.Discard(c);
-        }
-        hand.clear();
-        
-        for(Lays l : ScoredLays)
-        {
-            for(Card c : l.getCards())
-            {
-                    deck.Discard(c);
-            }
-        }
-        lays.clear();
-    }
+                       if(l instanceof Set)
+                       {
+                            p.lays.add(new Set(n));
+                            g.playerHand.updateH(p.hand.indexOf(n));
+                            p.hand.remove(n);
+                       }
 
-    public boolean TakeTurn()
-    {
-        isTurn = true;
-        discarded = false;
-        drawn = false;
-      
-        //while(turns == 0)
-            
-        while(!discarded)
-        {
-            
-            try {
-                Thread.sleep(500);
-            } catch (InterruptedException ex) {
-                Logger.getLogger(Player.class.getName()).log(Level.SEVERE, null, ex);
+                       else if(l instanceof Series)
+                        {
+                            p.lays.add(new Series(n));
+                            g.playerHand.updateH(p.hand.indexOf(n));
+                            p.hand.remove(n);
+                       }
+
+                    }
+                    else
+                        JOptionPane.showMessageDialog(g.window, "Not a valid addition to any set or series");
+                }
+                
+                p.checkLay.clear();
+                p.details.updateScore(p);
+                g.window.validate();
+                g.window.repaint();
+
+            }else if (p.checkLay.size() > 1 && e.getSource() == discard) {
+                    JOptionPane.showMessageDialog(g.window, "You cannot discard multiple cards");
+            }else if(e.getSource() == discard){
+                    JOptionPane.showMessageDialog(g.window, "You must select a card to discard");
+            }else if(e.getSource() == check){
+                    JOptionPane.showMessageDialog(g.window, "Not a valid lay");
             }
-            
+
         }
-        
-        if(hand.isEmpty())
-        {
-            
-            JOptionPane.showMessageDialog(null, "You have won! Congratulations!");
-            System.exit(0);
-            
-           
-        }
-            
-        return hand.isEmpty();
-    }
-    
-    public void addCard(Card c)
-    {
-        hand.add(c);
-    }
-    @Override
-    public String toString() {
-        return name + "\n" + "\t" + hand.toString();
     }
 }
