@@ -2,6 +2,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.ArrayList;
 
 public class Game {
@@ -15,12 +16,15 @@ public class Game {
     public Player player;
     public JLabel cardDeck = new JLabel();
     public JPanel centerCard = new JPanel();
+    static boolean drawn;
+    static int pick;
     //static JPanel center;
 
     Game() {
         window = new JFrame("Rummy");
         //Rules rule;
-     
+        drawn = false;
+        pick = 0;
         rummyGUI content = new rummyGUI(window, this);
         window.setContentPane(content);
         window.setResizable(true);
@@ -78,8 +82,10 @@ public class Game {
             @Override
             public void mouseClicked(MouseEvent e) {
                 
-                if(player.drawn)
+                if(player.drawn || pick > 0) {
                     JOptionPane.showMessageDialog(window, "You've already drawn this turn");
+                    player.drawn = false;
+                }
                 else
                 {
                     player.drawn = true;
@@ -87,6 +93,7 @@ public class Game {
                     player.hand.add(cd);
                     playerHand.add(cd);
                     updateDiscard();
+                    pick++;
                     window.validate();
                     window.repaint();
                 }
@@ -98,13 +105,7 @@ public class Game {
         cardDeck.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                if(player.drawn)
-                    JOptionPane.showMessageDialog(window, "You've already drawn this turn");
-                else
-                {
                     pickCard();
-                    player.drawn = true;
-                }
             }
         });
 
@@ -122,6 +123,7 @@ public class Game {
     public static void main(String[] args) 
     {
         Game game = new Game();
+        game.player.drawn = false;
         int winner;
         while(!Game.rule.victoryCheck())
         {
@@ -148,15 +150,16 @@ public class Game {
                 @Override
                 public void mouseClicked(MouseEvent e) {
 
-                    if (player.drawn) {
+                    if (drawn || pick > 0) {
                         JOptionPane.showMessageDialog(window, "You've already drawn this turn");
+                        drawn = false;
                     }
                     else {
                         Card cd = d.takeDiscard();
                         player.hand.add(cd);
                         playerHand.add(cd);
                         updateDiscard();
-                        player.drawn = true;
+                        drawn = true;
                         window.validate();
                         window.repaint();
                     }
@@ -176,18 +179,29 @@ public class Game {
         }
     }
     public void pickCard() {
-        Player p = players.get(0);
-        
-        if(p.drawn)
-            JOptionPane.showMessageDialog(window, "You've already drawn this turn");
+        //Player p = player;
+        pick++;
+        if(pick == 2) {
+            pick = 1;
+            return;
+        }
+        else if(drawn) {
+            JOptionPane.showMessageDialog(window, "You've already drawn this turn game");
+            drawn = false;
+            System.out.println(player.hand.size());
+        }
         else
         {
+            System.out.println(player.hand.size());
             Card newC = d.takeCard();
-            p.hand.add(newC);
+            player.hand.add(newC);
             playerHand.add(newC);
-            p.drawn = true;
+            drawn = true;
             window.validate();
             window.repaint();
+            System.out.println(player.hand.size());
         }
+        System.out.println(drawn);
+        System.out.println(player.hand.size());
     }
 }
