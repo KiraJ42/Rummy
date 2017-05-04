@@ -5,8 +5,9 @@ public class Series extends Lays {
 
     Series(ArrayList<Card> cards)
     {
-        lay = new ArrayList<Card>();
+        lay = new ArrayList<>();
         lay.addAll(cards);
+        
         score = 0;
         
         for(Card c : lay)
@@ -43,7 +44,7 @@ public class Series extends Lays {
       
         return true;
     }
-
+    
     @Override
     public boolean addCard(Card c)
     {
@@ -54,10 +55,10 @@ public class Series extends Lays {
             return true;
    
         
-        lay.remove(lay.size() - 1);
+        lay.remove(c);
         return false;      
     }
-    
+
     @Override
     public String toString() {
         String print = "";
