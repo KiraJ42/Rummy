@@ -10,13 +10,15 @@ import java.util.ArrayList;
  */
 public class Game {
 
-    public static String gameType;
-    public static ArrayList<Player> players;
-    public static Deck d;
-    public static JFrame window;
-    static playerHandGUI playerHand;
-    static JLabel discard;
-    static Player player;
+    public String gameType;
+    public ArrayList<Player> players;
+    public Deck d;
+    public JFrame window;
+    public playerHandGUI playerHand;
+    public JLabel discard;
+    public Player player;
+    public JLabel cardDeck = new JLabel();
+    public JPanel centerCard = new JPanel();
     //static JPanel center;
 
     Game() {
@@ -30,11 +32,8 @@ public class Game {
         window.pack();
         window.setVisible(true);
 
-
-        String[] types = {"Rummy", "Gin Rummy"};
         String name = JOptionPane.showInputDialog(window, "Enter Your Name:", "Welcome to Rummy!", JOptionPane.PLAIN_MESSAGE);
         player = new Player(name);
-        gameType = (String) JOptionPane.showInputDialog(window, "Which Rummy game would you like to play?", "Choose Game", JOptionPane.QUESTION_MESSAGE, null, types, types[0]);
         Integer[] playerNum = {2, 3, 4};
         Integer num = (Integer) JOptionPane.showInputDialog(window, "How many players in your game?", "Players",JOptionPane.QUESTION_MESSAGE, null, playerNum, playerNum[0]);
 
@@ -43,21 +42,11 @@ public class Game {
         JPanel centerBtns = new JPanel();
         centerBtns.setBackground(new Color(130,50,40));
         center.setLayout(new BoxLayout(center, BoxLayout.Y_AXIS));
-        JPanel centerCard = new JPanel();
+
+        centerCard = new JPanel();
         centerCard.setBackground(new Color(130,50,40));
         center.setBackground( new Color(130,50,40) );
         scores.setBackground( new Color(130,50,40) );
-
-        Card.backImg = Card.getImage(Card.back);
-        JLabel cardDeck = new JLabel(Card.backImg);
-        cardDeck.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                pickCard();
-            }
-        });
-
-        centerCard.add(cardDeck);
 
         d = new Deck();
 
@@ -70,7 +59,6 @@ public class Game {
             players.add(new Player("Player" + (i+2)));
 
         for(Player p : players) {
-            System.out.println(p.name);
             scores.add(p.details);
         }
         window.add(scores, BorderLayout.NORTH);
@@ -99,8 +87,19 @@ public class Game {
                 window.repaint();
             }
         });
-        centerCard.add(discard);
+
         centerBtns.add(buttonPanel);
+        Card.backImg = Card.getImage(Card.back);
+        cardDeck = new JLabel(Card.backImg);
+        cardDeck.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                pickCard();
+            }
+        });
+
+        centerCard.add(cardDeck);
+        centerCard.add(discard);
         center.add(centerCard);
         center.add(centerBtns);
 
