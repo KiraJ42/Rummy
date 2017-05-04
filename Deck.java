@@ -45,6 +45,11 @@ public class Deck {
         ret.makeImage();
         return ret;
     }
+
+    public Card getDiscardCard(){
+        Card ret = discard.get(discard.size()-1);
+        return ret;
+    }
     
     public Card takeDiscard()
     {
