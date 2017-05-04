@@ -10,12 +10,9 @@
 
   THE DEAL
 
-  The first dealer is chosen randomly, and the turn to deal alternates if there are two players, and rotates
-  clockwise if there are more than two. In a two player game, each player is dealt a hand of ten cards. Seven cards
-  each are dealt if there are three or four players, and when five or six play each player gets six cards. The cards
+  The player is dealt to first. After that, the computer players go in rank order. The cards
   are dealt one at a time, and after the deal, the next card is placed face up on the table to start the discard pile,
-  and the remainder of the deck is placed face down beside it to form the stock. The players look at and sort their
-  cards.
+  and the remainder of the deck is placed face down beside it to form the stock. 
 
   OBJECT OF THE GAME
 
@@ -31,8 +28,7 @@
 
   A group, set or book is three or four cards of the same rank, such as diamond7, heart7, spade7.
 
-  Laying off is adding a card or cards from your hand to a meld already on the table. The cards added to a meld must
-  make another valid meld. For example to the club4, club5, club6 you could add the club3 or the club7.
+  Laying off is adding a card or cards from your hand to any meld already on the table, even if is not your meld. The cards added to a meld must make another valid meld. For example to the club4, club5, club6 you could add the club3 or the club7.
   You are not permitted to rearrange the melds in the process. For example, club2, heart2, diamond2, spade2
   and spade3, spade4, spade5 have been melded, you are not permitted to move the spade2 from the group to the
   sequence, so as to lay off the spadeA.
@@ -42,8 +38,7 @@
 
   PLAY
 
-  If there are two players, they take alternate turns starting with the non dealer. If there are more than two
-  players, they take turns in clockwise rotation, beginning with the player to dealer's left.
+  The human player always takes their turn first.
 
   Each turn consists of the following parts:
 
@@ -53,9 +48,8 @@
   committed yourself to take it. If you draw from the stock, you add the card to your hand without showing it to
   the other players.
 
-  Melding. If you have a valid group or sequence in your hand, you may lay one such combination face up on the
-  table in front of you. You cannot meld more than one combination in a turn (but see House Rules).
-  Melding is optional; you are not obliged to meld just because you can.
+  Melding. If you have valid groups or sequences in your hand, you may lay as many melds as you can make face up on the
+  table in front of you. Melding is optional; you are not obliged to meld just because you can.
 
   Laying off. This is also optional. If you wish, you may add cards to groups or sequences previously melded by
   yourself or others. There is no limit to the number of cards a player may lay off in one turn.
