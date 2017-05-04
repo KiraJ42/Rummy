@@ -72,19 +72,26 @@ public class PlayerInfo extends JPanel {
         String spades = "";
         for(Lays x : p.ScoredLays){
             if(x instanceof Set){
-                sets = sets + x.toString();
+                if(x.lay.size() == 1 ){}
+
+                else{
+                    sets = sets + x.toString();
+                }
             }
             else if(x instanceof Series){
                 //series = series + x.toString();
-                if(x.lay.get(x.lay.size()-1).getSuit().equals("Hearts"))
-                    hearts = hearts + x;
-                else if(x.lay.get(x.lay.size()-1).getSuit().equals("Diamonds"))
-                    diamonds = diamonds + x;
-                else if(x.lay.get(x.lay.size()-1).getSuit().equals("Spades"))
-                    spades = spades + x;
-                else
-                    clubs = clubs + x;
+                if(x.lay.size() == 1) {}
 
+                else {
+                    if (x.lay.get(x.lay.size() - 1).getSuit().equals("Hearts"))
+                        hearts = hearts + x;
+                    else if (x.lay.get(x.lay.size() - 1).getSuit().equals("Diamonds"))
+                        diamonds = diamonds + x;
+                    else if (x.lay.get(x.lay.size() - 1).getSuit().equals("Spades"))
+                        spades = spades + x;
+                    else
+                        clubs = clubs + x;
+                }
             }
         }
         SETS = new JLabel(" Sets: " +  sets + " ");
