@@ -19,7 +19,7 @@ public class Card {
     public int intSuit;
 
     public String front;
-    static public String back = "images/gold_crown.png";
+    static public String back = "Resources/images/gold_crown.png";
     public ImageIcon frontImg;
     static public ImageIcon backImg = new ImageIcon(back);
     private int x;
@@ -35,12 +35,12 @@ public class Card {
         intSuit = s;
        backImg = null;
        frontImg = null;
-        front = "images/" + rank + suit + ".png";
+        front = "Resources/images/" + rank + suit + ".png";
     }
 
     public static ImageIcon getImage(String path){
         try {
-            InputStream is = new BufferedInputStream(new FileInputStream(path));
+            InputStream is = Card.class.getResourceAsStream(back);
             Image image = ImageIO.read(is);
            Image img = image.getScaledInstance(140,200, Image.SCALE_SMOOTH);
             return new ImageIcon(img);
@@ -51,14 +51,14 @@ public class Card {
     }
 
    static public void changeBack(String p){
-        String path = "images/gold_crown.png";
+        String path = "Resources/images/gold_crown.png";
 
         if(p.equals("gold"))
-            path = "images/gold_crown.png";
+            path = "Resources/images/gold_crown.png";
         if(p.equals("red"))
-            path = "images/card back red.png";
+            path = "Resources/images/card back red.png";
         if(p.equals("blue"))
-            path = "images/blue.png";
+            path = "Resources/images/blue.png";
         back = path;
 
        try {
@@ -74,7 +74,7 @@ public class Card {
 
     public void makeImage(){
         try {
-            InputStream is = new BufferedInputStream(new FileInputStream(front));
+            InputStream is = this.getClass().getResourceAsStream(front);
             Image image = ImageIO.read(is);
             Image img = image.getScaledInstance(140,200, Image.SCALE_SMOOTH);
             frontImg = new ImageIcon(img);
