@@ -67,12 +67,10 @@
 
   SCORING
 
-  When a player goes out, the other players add up the value of all the cards still remaining in their hands,
-  as follows:
+  The Scoring for each card laid down is as follows:
 
   Face cards (K,Q,J) and 10 are worth 10 points each
-  Aces are worth 20 point each.
+  Aces are worth 20 points each.
   Number Cards are worth 5 points each.
-  Players with cards left in their hand will have the points in their hand subtracted from their total score
 
-  The player with the highest score wins the game.
+
