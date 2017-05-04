@@ -21,7 +21,6 @@ public class Deck {
 
     public void shuffle()
     {
-        //System.out.println("Shuffling Deck...");
         Collections.shuffle(deck);
     }
 
@@ -37,7 +36,7 @@ public class Deck {
             discard.add(deck.get(deck.size()-1));
             deck.remove(deck.size()-1);
             
-            System.out.println("Shuffling deck");
+           
         }
         
         Card ret = deck.get(deck.size()-1);
@@ -45,10 +44,15 @@ public class Deck {
         ret.makeImage();
         return ret;
     }
-
-    public Card getDiscardCard(){
-        Card ret = discard.get(discard.size()-1);
-        return ret;
+    
+    public void discardClear()
+    {
+        deck.addAll(discard);
+        discard.clear();
+        shuffle();
+        
+        discard.add(deck.get(deck.size()-1));
+        deck.remove(deck.size()-1);
     }
     
     public Card takeDiscard()
@@ -57,13 +61,19 @@ public class Deck {
         discard.remove(discard.size()-1);
         return ret;
     }
+    
+    public Card getDiscardCard()
+    {
+        Card ret = discard.get(discard.size()-1);
+        return ret;
+    }
 
     public void Deal(int hand, ArrayList<Player> players)
     {
         int i = 0;
         while(i < hand){
             for(Player x : players) {
-                x.hand.add(takeCard());
+                x.addCard(takeCard());
             }
             i++;
         }
