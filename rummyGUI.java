@@ -7,9 +7,9 @@ import javax.swing.*;
 
 public class rummyGUI extends JDesktopPane {
 
-    private JRadioButtonMenuItem gold;
-    private JRadioButtonMenuItem red;
-    private JRadioButtonMenuItem blue;
+    static JRadioButtonMenuItem gold;
+    static JRadioButtonMenuItem red;
+    static JRadioButtonMenuItem blue;
     private JRadioButtonMenuItem alpaca;
 
     private JMenuItem Gin;
@@ -28,27 +28,19 @@ public class rummyGUI extends JDesktopPane {
         setLayout( new BorderLayout(3,3) );
 
         JMenuBar mb = new JMenuBar();
-        JMenuItem newG;
 
         JMenu menu, set, cds, rules;
 
         menu = new JMenu("Game");
-        newG = new JMenuItem("New Game");
-
-        gameHandler newGame = new gameHandler();
-        newG.addActionListener(newGame);
 
         set = new JMenu("Settings");
 
         rules = new JMenu("Rules");
 
-        Gin = new JMenuItem("Gin");
         Rummy = new JMenuItem("Rummy");
 
         ruleHandler ruleH = new ruleHandler();
-        Gin.addActionListener(ruleH);
         Rummy.addActionListener(ruleH);
-        rules.add(Gin);
         rules.add(Rummy);
 
         cds = new JMenu("Cards");
@@ -79,7 +71,6 @@ public class rummyGUI extends JDesktopPane {
         cds.add(blue);
         cds.add(alpaca);
 
-        menu.add(newG);
         menu.add(set);
 
         origin.setJMenuBar(mb);
@@ -163,20 +154,6 @@ public class rummyGUI extends JDesktopPane {
                 openRules("Gin Rummy");
             if(e.getSource() == Rummy)
                 openRules("Rummy");
-        }
-    }
-
-    private class gameHandler implements ActionListener{
-
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            for(Player p : game.players){
-                p.clear(game.d);
-                p.totalScore = 0;
-                game.d.Deal(7, game.players);
-            }
-            game.window.validate();
-            game.window.repaint();
         }
     }
 }
