@@ -1,146 +1,68 @@
+import javax.swing.*;
+import javax.swing.border.Border;
+import java.awt.*;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.JOptionPane;
+import java.awt.event.*;
 
-public class Player extends Thread{
+/**
+ * Created by Owner on 4/29/2017.
+ */
+public class playerHandGUI extends JPanel{
 
-    public String name;
-    protected int totalScore;
-    public boolean isTurn;
-    public boolean discarded;
-    public boolean drawn;
-    public PlayerInfo details;
-    public static int turns;
-    public static Game g;
-    
-    public ArrayList<Card> hand = new ArrayList<Card>();
-    public ArrayList<Card> checkLay = new ArrayList<Card>();
-    public ArrayList<Lays> lays = new ArrayList<Lays>();
-    public static ArrayList<Lays> allLays = new ArrayList<Lays>();
-    public ArrayList<Lays> ScoredLays = new ArrayList<Lays>();
-    
-    Player(String n, Game g){
-        name = n;
-        totalScore = 0;
-        details = new PlayerInfo(this);
-        isTurn = false;
-        discarded = false;
-        turns = 0;
-        g = g;
-    }
-    
-    //takes in an int and adds it to the player's total score
-    public int addTotalScore(int i)
-    {
-        totalScore += i;
-        return totalScore;
-    }
-    
-    public int getTotalScore(){
+    static Player player;
+    static ArrayList<JLabel> hand;
+    playerHandGUI(Player p) {
+        super();
+        hand = new ArrayList<>();
+        player = p;
+        setLayout(new FlowLayout());
+        setBackground(new Color(130, 50, 40));
 
-
-        totalScore = totalScore + getLaysScore();
-        return totalScore;
-    }
-    
-    public int getLaysScore()
-    {
-        int score = 0;
-        
-        for(Lays l : lays)
-        {
-            /*for(Card c : l.lay)
-            {
-                for(Lays la : ScoredLays)
-                {
-                    if(!la.lay.contains(c))
-                    {
-                        score += l.getScore();
-                        ScoredLays.add(l);
-                        allLays.add(l);
-                    }
+        for (int i = 0; i < player.hand.size(); i++) {
+            Card a = player.hand.get(i);
+            JLabel j = new JLabel(a.frontImg);
+            hand.add(j);
+            j.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    selectCard(player, a, j);
                 }
-            }*/
-            
-            score += l.getScore();
-            ScoredLays.add(l);
-            
-            if(!l.single)
-                allLays.add(l);
-            
+            });
+            add(j);
         }
-
-        lays.clear();
-        return score;
-    }
-    public int getHandScore()
-    {
-        int score = 0;
-        
-        for(Card c : hand)
-        {
-            score -= c.getValue();
-        }
-        
-        return score;
-    }
-    
-    public void clear(Deck deck)
-    {
-        for(Card c : hand)
-        {
-            deck.Discard(c);
-        }
-        hand.clear();
-        
-        for(Lays l : ScoredLays)
-        {
-            for(Card c : l.getCards())
-            {
-                    deck.Discard(c);
-            }
-        }
-        lays.clear();
     }
 
-    public boolean TakeTurn()
-    {
-        isTurn = true;
-        discarded = false;
-        drawn = false;
-      
-        //while(turns == 0)
-            
-        while(!discarded)
-        {
-            
-            try {
-                Thread.sleep(500);
-            } catch (InterruptedException ex) {
-                Logger.getLogger(Player.class.getName()).log(Level.SEVERE, null, ex);
+    protected void selectCard(Player px, Card pCard, JLabel jl){
+        if(jl.getBorder() == null){
+            px.checkLay.add(pCard);
+            Border border = BorderFactory.createLineBorder(Color.BLUE, 5);
+            jl.setBorder(border);
+        }else {
+            px.checkLay.remove(pCard);
+            jl.setBorder(null);
+        }
+        jl.validate();
+        jl.repaint();
+    }
+
+    public void add(Card c){
+        JLabel j = new JLabel(c.frontImg);
+        j.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                selectCard(player, c, j);
             }
-            
-        }
-        
-        if(hand.isEmpty())
-        {
-            
-            JOptionPane.showMessageDialog(null, "You have won! Congratulations!");
-            System.exit(0);
-            
-           
-        }
-            
-        return hand.isEmpty();
+        });
+        hand.add(j);
+        this.add(j);
     }
-    
-    public void addCard(Card c)
-    {
-        hand.add(c);
-    }
-    @Override
-    public String toString() {
-        return name + "\n" + "\t" + hand.toString();
+
+    public void updateH(int index){
+        JLabel L = hand.get(index);
+        hand.remove(index);
+        this.remove(L);
+        this.validate();
+        this.repaint();
+
     }
 }
