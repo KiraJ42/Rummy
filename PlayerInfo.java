@@ -1,5 +1,3 @@
-import sun.plugin2.message.transport.SerializingTransport;
-
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.table.DefaultTableModel;
@@ -17,11 +15,7 @@ public class PlayerInfo extends JPanel {
     protected JLabel C;
     protected Player player;
     protected Font bigger;
-    String sets = "";
-    String hearts = "";
-    String diamonds = "";
-    String spades = "";
-    String clubs = "";
+
     public PlayerInfo(Player p){
         setBackground(new Color (250, 250, 210));
         Border border = BorderFactory.createLineBorder(Color.BLACK, 3);
@@ -59,7 +53,7 @@ public class PlayerInfo extends JPanel {
     }
 
     public void updateScore(Player p){
-        System.out.println(p.getTotalScore());
+        //System.out.println(p.getTotalScore());
         this.remove(SCORE);
         this.remove(SERIES);
         this.remove(SETS);
@@ -70,21 +64,26 @@ public class PlayerInfo extends JPanel {
 
         SCORE = new JLabel(" Score: " + p.getTotalScore() + " ");
         SCORE.setFont(bigger);
-        String series = "";
+        //String series = "";
+        String sets = "";
+        String hearts = "";
+        String diamonds = "";
+        String clubs = "";
+        String spades = "";
         for(Lays x : p.ScoredLays){
             if(x instanceof Set){
                 sets = sets + x.toString();
             }
             else if(x instanceof Series){
-                series = series + x.toString();
+                //series = series + x.toString();
                 if(x.lay.get(x.lay.size()-1).getSuit().equals("Hearts"))
-                    hearts = hearts + series;
+                    hearts = hearts + x;
                 else if(x.lay.get(x.lay.size()-1).getSuit().equals("Diamonds"))
-                    diamonds = diamonds + series;
+                    diamonds = diamonds + x;
                 else if(x.lay.get(x.lay.size()-1).getSuit().equals("Spades"))
-                    spades = spades + series;
+                    spades = spades + x;
                 else
-                    clubs = clubs + series;
+                    clubs = clubs + x;
 
             }
         }
