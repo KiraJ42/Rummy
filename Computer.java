@@ -70,16 +70,15 @@ public class Computer extends Player{
         {
             if(l.addCard(discard))
             {
-               addCard(d.takeDiscard());
+               discard = d.takeDiscard();
+               addCard(discard);
                play(discard);
-               ArrayList<Card> temmp = new ArrayList<Card>();
-               temmp.add(discard);
-               
+                              
                if(l instanceof Set)
-                lays.add(new Set(temmp));
+                lays.add(new Set(discard));
                
                else if(l instanceof Series)
-                lays.add(new Series(temmp));
+                lays.add(new Series(discard));
                
                getDiscard = true;
             }
