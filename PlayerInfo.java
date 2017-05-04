@@ -11,8 +11,17 @@ public class PlayerInfo extends JPanel {
     protected JLabel SCORE;
     protected JLabel SETS;
     protected JLabel SERIES;
+    protected JLabel H;
+    protected JLabel D;
+    protected JLabel S;
+    protected JLabel C;
     protected Player player;
     protected Font bigger;
+    String sets = "";
+    String hearts = "";
+    String diamonds = "";
+    String spades = "";
+    String clubs = "";
     public PlayerInfo(Player p){
         setBackground(new Color (250, 250, 210));
         Border border = BorderFactory.createLineBorder(Color.BLACK, 3);
@@ -28,39 +37,77 @@ public class PlayerInfo extends JPanel {
         SCORE.setFont(bigger);
         SETS = new JLabel(" Sets: " +  " ");
         SETS.setFont(bigger);
-        SERIES = new JLabel(" Series" + " ");
+        SERIES = new JLabel(" Series: " + " ");
         SERIES.setFont(bigger);
+        H = new JLabel("\u2665: " + " ");
+        H.setFont(bigger);
+        D = new JLabel("\u2666: " + " ");
+        D.setFont(bigger);
+        S = new JLabel("\u2660: " + " ");
+        S.setFont(bigger);
+        C = new JLabel("\u2663: " + " ");
+        C.setFont(bigger);
 
         add(name);
         add(SCORE);
         add(SETS);
         add(SERIES);
+        add(H);
+        add(D);
+        add(S);
+        add(C);
     }
 
-    public void updateScore(){
-        System.out.println(player.getTotalScore());
+    public void updateScore(Player p){
+        System.out.println(p.getTotalScore());
         this.remove(SCORE);
         this.remove(SERIES);
         this.remove(SETS);
-        SCORE = new JLabel(" Score: " + player.getTotalScore() + " ");
+        this.remove(H);
+        this.remove(D);
+        this.remove(S);
+        this.remove(C);
+
+        SCORE = new JLabel(" Score: " + p.getTotalScore() + " ");
         SCORE.setFont(bigger);
-        String sets = "";
         String series = "";
-        for(Lays x : player.ScoredLays){
+        for(Lays x : p.ScoredLays){
             if(x instanceof Set){
                 sets = sets + x.toString();
             }
             else if(x instanceof Series){
                 series = series + x.toString();
+                if(x.lay.get(x.lay.size()-1).getSuit().equals("Hearts"))
+                    hearts = hearts + series;
+                else if(x.lay.get(x.lay.size()-1).getSuit().equals("Diamonds"))
+                    diamonds = diamonds + series;
+                else if(x.lay.get(x.lay.size()-1).getSuit().equals("Spades"))
+                    spades = spades + series;
+                else
+                    clubs = clubs + series;
+
             }
         }
         SETS = new JLabel(" Sets: " +  sets + " ");
         SETS.setFont(bigger);
-        SERIES = new JLabel(" Series" + series);
+        SERIES = new JLabel(" Series: " + " ");
         SERIES.setFont(bigger);
+        H = new JLabel("\u2665: " + hearts);
+        H.setFont(bigger);
+        D = new JLabel("\u2666: " + diamonds);
+        D.setFont(bigger);
+        S = new JLabel("\u2660: " + spades);
+        S.setFont(bigger);
+        C = new JLabel("\u2663: " + clubs);
+        C.setFont(bigger);
+
         add(SCORE);
         add(SETS);
         add(SERIES);
+        add(H);
+        add(D);
+        add(S);
+        add(C);
         this.validate();
         this.repaint();
     }
