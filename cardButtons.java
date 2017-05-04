@@ -39,7 +39,9 @@ public class cardButtons extends JPanel {
                 p.checkLay.clear();
                 g.updateDiscard();
                 Player.turns++;
+                g.pick = 0;
                 p.discarded = true;
+                g.drawn = false;
                 g.window.validate();
                 g.window.repaint();
             }else if(p.checkLay.size() > 1 && e.getSource() == check) {
