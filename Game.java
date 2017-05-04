@@ -179,29 +179,25 @@ public class Game {
         }
     }
     public void pickCard() {
-        //Player p = player;
         pick++;
         if(pick == 2) {
             pick = 1;
+            JOptionPane.showMessageDialog(window, "You've already drawn this turn");
+            drawn = false;
             return;
         }
         else if(drawn) {
-            JOptionPane.showMessageDialog(window, "You've already drawn this turn game");
+            JOptionPane.showMessageDialog(window, "You've already drawn this turn");
             drawn = false;
-            System.out.println(player.hand.size());
         }
         else
         {
-            System.out.println(player.hand.size());
             Card newC = d.takeCard();
             player.hand.add(newC);
             playerHand.add(newC);
             drawn = true;
             window.validate();
             window.repaint();
-            System.out.println(player.hand.size());
         }
-        System.out.println(drawn);
-        System.out.println(player.hand.size());
     }
 }
