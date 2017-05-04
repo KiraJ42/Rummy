@@ -10,9 +10,9 @@ public class rummyGUI extends JDesktopPane {
     static JRadioButtonMenuItem gold;
     static JRadioButtonMenuItem red;
     static JRadioButtonMenuItem blue;
-    private JRadioButtonMenuItem alpaca;
+    static JRadioButtonMenuItem alpaca;
+    static JRadioButtonMenuItem FSU;
 
-    private JMenuItem Gin;
     private JMenuItem Rummy;
 
     static Game game;
@@ -29,19 +29,14 @@ public class rummyGUI extends JDesktopPane {
 
         JMenuBar mb = new JMenuBar();
 
-        JMenu menu, set, cds, rules;
-
-        menu = new JMenu("Game");
+        JMenu set, cds;
 
         set = new JMenu("Settings");
 
-        rules = new JMenu("Rules");
-
-        Rummy = new JMenuItem("Rummy");
+        Rummy = new JMenuItem("Rules");
 
         ruleHandler ruleH = new ruleHandler();
         Rummy.addActionListener(ruleH);
-        rules.add(Rummy);
 
         cds = new JMenu("Cards");
 
@@ -49,32 +44,34 @@ public class rummyGUI extends JDesktopPane {
         red =  new JRadioButtonMenuItem("Red");
         blue = new JRadioButtonMenuItem("Blue");
         alpaca = new JRadioButtonMenuItem("Alpaca");
+        FSU = new JRadioButtonMenuItem("FSU");
 
         radioHandler handle = new radioHandler();
         gold.addItemListener(handle);
         red.addItemListener(handle);
         blue.addItemListener(handle);
         alpaca.addItemListener(handle);
+        FSU.addItemListener(handle);
 
         ButtonGroup group = new ButtonGroup();
         group.add(gold);
         group.add(red);
         group.add(blue);
         group.add(alpaca);
+        group.add(FSU);
         gold.setSelected(true);
 
-        set.add(rules);
+        set.add(Rummy);
         set.add(cds);
 
         cds.add(gold);
         cds.add(red);
         cds.add(blue);
         cds.add(alpaca);
-
-        menu.add(set);
+        cds.add(FSU);
 
         origin.setJMenuBar(mb);
-        mb.add(menu);
+        mb.add(set);
 
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         setPreferredSize(new Dimension(screenSize.width*1, (screenSize.height*1)-100));
@@ -86,15 +83,40 @@ public class rummyGUI extends JDesktopPane {
     private class radioHandler implements ItemListener{
         public void itemStateChanged(ItemEvent e){
             if(e.getSource() == gold)
-                Card.backImg = Card.getImage("images/gold_crown.png");
+                Card.backImg = Card.getImage("Resources/images/gold_crown.png");
             if(e.getSource() == red)
-                Card.backImg = Card.getImage("images/card back red.png");
+                Card.backImg = Card.getImage("Resources/images/card back red.png");
             if(e.getSource() == blue)
-                Card.backImg = Card.getImage("images/blue.png");
+                Card.backImg = Card.getImage("Resources/images/blue.png");
             if(e.getSource() == alpaca)
-                Card.backImg = Card.getImage("images/alpaca.png");
+                Card.backImg = Card.getImage("Resources/images/alpaca.png");
+            if(e.getSource() == FSU)
+                Card.backImg = Card.getImage("Resources/images/FSU.png");
 
             game.centerCard.remove(game.cardDeck);
+            JLabel temp = game.discard;
+            game.centerCard.remove(game.discard);
+
+            game.discard = temp;
+            game.discard.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+
+                    if (game.player.drawn) {
+                        JOptionPane.showMessageDialog(game.window, "You've already drawn this turn");
+                    }
+                    else {
+                        Card cd = game.d.takeDiscard();
+                        game.player.hand.add(cd);
+                        game.playerHand.add(cd);
+                        game.updateDiscard();
+                        game.player.drawn = true;
+                        game.window.validate();
+                        game.window.repaint();
+                    }
+                }
+            });
+
             game.cardDeck = new JLabel(Card.backImg);
             game.cardDeck.addMouseListener(new MouseAdapter() {
                 @Override
@@ -103,6 +125,7 @@ public class rummyGUI extends JDesktopPane {
                 }
             });
             game.centerCard.add(game.cardDeck);
+            game.centerCard.add(game.discard);
             origin.validate();
             origin.repaint();
         }
@@ -110,16 +133,12 @@ public class rummyGUI extends JDesktopPane {
 
     protected void openRules(String input) {
 
-        String path = "Error";
-        if(input.equals("Rummy"))
-            path = "Rummy";
-        if(input.equals("Gin Rummy"))
-            path = "Gin Rummy";
+        String path = "Rummy";
         JDialog dialog = new JDialog();
         JTextArea rulesText = new JTextArea();
         FileReader reader = null;
         try {
-            String filename = "Rules/"+path+".txt";
+            String filename = "Resources/Rules/"+path+".txt";
             reader = new FileReader(filename);
             rulesText.read(reader, filename);
 
@@ -150,9 +169,6 @@ public class rummyGUI extends JDesktopPane {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            if(e.getSource() == Gin)
-                openRules("Gin Rummy");
-            if(e.getSource() == Rummy)
                 openRules("Rummy");
         }
     }
